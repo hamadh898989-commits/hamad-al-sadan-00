@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بنك كيمياء - التعليم المتطور</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a2a6c;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --easy: #2ecc71;
+            --medium: #f39c12;
+            --hard: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --card-bg: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #2c3e50);
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* شاشة التسجيل */
+        .register-screen {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: #000000;
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .register-content {
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .register-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--light);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: right;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            font-size: 1rem;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        /* التصميم الشريطي */
+        nav {
+            background: rgba(26, 42, 108, 0.95);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            right: 0;
+            background: var(--secondary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        /* قسم الترحيب */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: transform 0.3s, background 0.3s;
+            animation: fadeInUp 1s ease 0.6s both;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            background: #c0392b;
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.6);
+        }
+
+        .cta-button.secondary {
+            background: var(--secondary);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .cta-button.secondary:hover {
+            background: #2980b9;
+        }
+
+        /* الأقسام */
+        .section {
+            padding: 100px 0;
+            background: rgba(255, 255, 255, 0.05);
+            margin: 50px 0;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--light);
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 50%;
+            transform: translateX(50%);
+            width: 100px;
+            height: 3px;
+            background: var(--secondary);
+        }
+
+        /* بطاقات الخدمات */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-card p {
+            margin-bottom: 1.5rem;
+            color: rgba(236, 240, 241, 0.8);
+        }
+
+        /* بطاقات المستويات */
+        .level-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            height: 100%;
+        }
+
+        .level-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .level-card.easy {
+            border-top: 5px solid var(--easy);
+        }
+
+        .level-card.medium {
+            border-top: 5px solid var(--medium);
+        }
+
+        .level-card.hard {
+            border-top: 5px solid var(--hard);
+        }
+
+        .level-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .level-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .level-desc {
+            color: rgba(236, 240, 241, 0.8);
+            margin-bottom: 1.5rem;
+        }
+
+        /* التذييل */
+        footer {
+            background: var(--dark);
+            padding: 3rem 0;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .footer-credit {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: rgba(236, 240, 241, 0.7);
+        }
+
+        /* الرسوم المتحركة */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* تأثيرات الخلفية */
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+            }
+        }
+
+        /* التجاوب */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* أنماط خاصة للأسئلة */
+        .question-container {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .option {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .option:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .option.correct {
+            background: rgba(46, 204, 113, 0.3);
+            border: 1px solid var(--easy);
+        }
+
+        .option.incorrect {
+            background: rgba(231, 76, 60, 0.3);
+            border: 1px solid var(--hard);
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: rgba(46, 204, 113, 0.2);
+            border: 1px solid var(--easy);
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid var(--hard);
+            display: block;
+        }
+
+        /* شاشة الاختبار */
+        .test-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .close-test {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        /* اختيار الوقت */
+        .time-selection {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .time-option {
+            padding: 15px 30px;
+            background: var(--card-bg);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .time-option:hover {
+            border-color: var(--secondary);
+        }
+
+        .time-option.selected {
+            border-color: var(--accent);
+            background: rgba(231, 76, 60, 0.2);
+        }
+
+        /* شاشة النتائج */
+        .results-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            padding: 2rem;
+            overflow-y: auto;
+            text-align: center;
+        }
+
+        .results-content {
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 15px;
+            max-width: 600px;
+            margin: 2rem auto;
+            backdrop-filter: blur(10px);
+        }
+
+        .score {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 1rem 0;
+            color: var(--secondary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: var(--secondary);
+            transition: width 0.5s;
+        }
+
+        .student-info {
+            background: var(--card-bg);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- تأثيرات الخلفية -->
+    <div class="floating-elements">
+        <div class="floating-element" style="width: 100px; height: 100px; top: 10%; right: 10%; animation-delay: 0s;"></div>
+        <div class="floating-element" style="width: 150px; height: 150px; top: 20%; left: 5%; animation-delay: 2s;"></div>
+        <div class="floating-element" style="width: 80px; height: 80px; bottom: 20%; right: 20%; animation-delay: 4s;"></div>
+        <div class="floating-element" style="width: 120px; height: 120px; bottom: 10%; left: 10%; animation-delay: 6s;"></div>
+    </div>
+
+    <!-- شاشة التسجيل -->
+    <div class="register-screen" id="register-screen">
+        <div class="register-content">
+            <h2 class="register-title">تسجيل الطالب</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="student-name">اسم الطالب:</label>
+                    <input type="text" id="student-name" required placeholder="أدخل اسمك الكامل">
+                </div>
+                <div class="form-group">
+                    <label for="student-class">الشعبة:</label>
+                    <select id="student-class" required>
+                        <option value="">اختر الشعبة</option>
+                        <option value="1">الشعبة 1</option>
+                        <option value="2">الشعبة 2</option>
+                        <option value="3">الشعبة 3</option>
+                        <option value="4">الشعبة 4</option>
+                        <option value="5">الشعبة 5</option>
+                        <option value="6">الشعبة 6</option>
+                        <option value="7">الشعبة 7</option>
+                    </select>
+                </div>
+                <button type="submit" class="cta-button" style="width: 100%;">بدء الاختبارات</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- الشريط العلوي -->
+    <nav style="display: none;" id="main-nav">
+        <div class="container nav-container">
+            <div class="logo">
+                <i class="fas fa-flask"></i> بنك كيمياء
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">الرئيسية</a></li>
+                <li><a href="#chapters">الأقسام</a></li>
+                <li><a href="#about">عن الموقع</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- الصفحة الترحيبية -->
+    <section id="home" class="hero" style="display: none;">
+        <div class="hero-content">
+            <h1>مرحباً بك في عالم الكيمياء!</h1>
+            <p>اختباراتنا صممت لتختبر معلوماتك، تنمي مهاراتك، وتجعلك تكتشف أسرار العناصر والتفاعلات. استعد للتحدي وابدأ رحلتك العلمية الآن!</p>
+            <a href="#chapters" class="cta-button">ابدأ الاختبارات</a>
+        </div>
+    </section>
+
+    <!-- قسم الأقسام -->
+    <section id="chapters" class="section" style="display: none;">
+        <div class="container">
+            <h2 class="section-title">اختر القسم</h2>
+            <div class="services-grid">
+                <!-- قسم 1: أساسيات الكيمياء -->
+                <div class="service-card" data-chapter="1">
+                    <div class="service-icon">🧪</div>
+                    <h3>أساسيات الكيمياء</h3>
+                    <p>علم الكيمياء، المادة وخصائصها، طبقة الأوزون، المركبات الكيميائية</p>
+                    <button class="cta-button start-chapter" data-chapter="1">ابدأ الاختبار</button>
+                </div>
+                
+                <!-- قسم 2: الجدول الدوري والروابط -->
+                <div class="service-card" data-chapter="2">
+                    <div class="service-icon">⚗️</div>
+                    <h3>الجدول الدوري والروابط</h3>
+                    <p>الجدول الدوري، الروابط الأيونية والتساهمية، الأشكال الجزيئية</p>
+                    <button class="cta-button start-chapter" data-chapter="2">ابدأ الاختبار</button>
+                </div>
+                
+                <!-- قسم 3: حالات المادة -->
+                <div class="service-card" data-chapter="3">
+                    <div class="service-icon">🔬</div>
+                    <h3>حالات المادة</h3>
+                    <p>الخواص الفيزيائية والكيميائية، التغيرات، المخاليط والمركبات</p>
+                    <button class="cta-button start-chapter" data-chapter="3">ابدأ الاختبار</button>
+                </div>
+                
+                <!-- قسم 4: العناصر والمركبات -->
+                <div class="service-card" data-chapter="4">
+                    <div class="service-icon">🌡️</div>
+                    <h3>العناصر والمركبات</h3>
+                    <p>العناصر الكيميائية، المركبات، المخاليط، قوانين النسب</p>
+                    <button class="cta-button start-chapter" data-chapter="4">ابدأ الاختبار</button>
+                </div>
+                
+                <!-- قسم 5: التركيب الذري -->
+                <div class="service-card" data-chapter="5">
+                    <div class="service-icon">⚛️</div>
+                    <h3>التركيب الذري</h3>
+                    <p>النماذج الذرية، النظائر، الإلكترونات، العدد الذري والكتلي</p>
+                    <button class="cta-button start-chapter" data-chapter="5">ابدأ الاختبار</button>
+                </div>
+                
+                <!-- قسم 6: الإلكترونيات والطيف -->
+                <div class="service-card" data-chapter="6">
+                    <div class="service-icon">✨</div>
+                    <h3>الإلكترونيات والطيف</h3>
+                    <p>مستويات الطاقة، الأطياف الذرية، المدارات، التوزيع الإلكتروني</p>
+                    <button class="cta-button start-chapter" data-chapter="6">ابدأ الاختبار</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم اختيار مستوى الصعوبة -->
+    <section id="levels" class="section" style="display: none;">
+        <div class="container">
+            <h2 class="section-title">اختر مستوى الصعوبة</h2>
+            <div class="services-grid">
+                <div class="level-card easy" data-level="easy">
+                    <div class="level-icon">🟢</div>
+                    <h3 class="level-title">المستوى السهل</h3>
+                    <p class="level-desc">(تذكر - فهم) - مناسب للمبتدئين</p>
+                    <p>أسئلة تركز على المفاهيم الأساسية والاستدعاء المباشر للمعلومات</p>
+                    <button class="cta-button select-level" data-level="easy">اختر المستوى السهل</button>
+                </div>
+                <div class="level-card medium" data-level="medium">
+                    <div class="level-icon">🟠</div>
+                    <h3 class="level-title">المستوى المتوسط</h3>
+                    <p class="level-desc">(تحليل - تطبيق) - مناسب للمتوسطين</p>
+                    <p>أسئلة تتطلب تحليل العلاقات وتطبيق المعرفة في مواقف جديدة</p>
+                    <button class="cta-button select-level" data-level="medium">اختر المستوى المتوسط</button>
+                </div>
+                <div class="level-card hard" data-level="hard">
+                    <div class="level-icon">🔴</div>
+                    <h3 class="level-title">المستوى الصعب</h3>
+                    <p class="level-desc">(تحليل عميق - تقييم - إبداع) - مناسب للمتقدمين</p>
+                    <p>أسئلة تتطلب تفكيرًا نقديًا وتقييمًا للمعلومات وإبداعًا في الحلول</p>
+                    <button class="cta-button select-level" data-level="hard">اختر المستوى الصعب</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- اختيار الوقت -->
+    <section id="time-selection" class="section" style="display: none;">
+        <div class="container">
+            <h2 class="section-title">اختر مدة الاختبار</h2>
+            <div class="student-info" id="current-student-info">
+                <!-- معلومات الطالب تظهر هنا -->
+            </div>
+            <div class="time-selection">
+                <div class="time-option" data-time="20">
+                    <h3>20 دقيقة</h3>
+                    <p>اختبار سريع</p>
+                </div>
+                <div class="time-option" data-time="40">
+                    <h3>40 دقيقة</h3>
+                    <p>اختبار متوسط</p>
+                </div>
+                <div class="time-option" data-time="50">
+                    <h3>50 دقيقة</h3>
+                    <p>اختبار شامل</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="cta-button start-test">بدء الاختبار</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- شاشة الاختبار -->
+    <div class="test-screen" id="test-screen">
+        <div class="container">
+            <div class="test-header">
+                <div class="timer" id="timer">20:00</div>
+                <h2 id="test-title">اختبار الكيمياء</h2>
+                <button class="close-test" onclick="endTest()">إنهاء الاختبار</button>
+            </div>
+            
+            <div id="questions-container">
+                <!-- الأسئلة ستظهر هنا -->
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="cta-button" onclick="submitTest()">تسليم الإجابات</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- شاشة النتائج -->
+    <div class="results-screen" id="results-screen">
+        <div class="container">
+            <div class="results-content">
+                <h2>نتيجة الاختبار</h2>
+                <div class="student-info" id="results-student-info">
+                    <!-- معلومات الطالب في النتائج -->
+                </div>
+                <div class="score" id="final-score">0/0</div>
+                <div class="progress-bar">
+                    <div class="progress" id="progress-bar" style="width: 0%"></div>
+                </div>
+                <p id="result-message"></p>
+                <button class="cta-button" onclick="closeResults()">العودة للرئيسية</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- التذييل -->
+    <footer style="display: none;" id="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>© 2024 بنك كيمياء - جميع الحقوق محفوظة</p>
+                <p>منصة التعليم الكيميائي المتطور</p>
+                <div class="footer-credit">
+                    تم إنشاء بنك الأسئلة بواسطة الطالب حمد السعدان وبإشراف الأستاذ عبدالله حمدي
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // بيانات التطبيق
+        let currentStudent = null;
+        let currentChapter = null;
+        let currentLevel = null;
+        let selectedTime = 20;
+        let timerInterval = null;
+        let timeLeft = 0;
+        let userAnswers = {};
+        let currentQuestions = [];
+
+        // بيانات الأسئلة الكاملة من جميع الملفات
+        const questionsDatabase = {
+            1: { // قسم 1: أساسيات الكيمياء (من الملف 2)
+                easy: [
+                    { id: 1, question: "علم الكيمياء هو علم يدرس:", options: ["الفضاء", "تركيب المادة وتغيراتها", "النباتات"], correct: 1 },
+                    { id: 2, question: "المادة الكيميائية تمتاز بأنها:", options: ["ليس لها تركيب", "لها تركيب محدد وثابت", "تتغير كل ثانية"], correct: 1 },
+                    { id: 3, question: "طبقة الأوزون توجد في:", options: ["التروبوسفير", "الستراتوسفير", "الميزوسفير"], correct: 1 },
+                    { id: 4, question: "الأوزون يحمي الأرض من:", options: ["الأشعة تحت الحمراء", "الأشعة فوق البنفسجية UVB", "الضوء المرئي"], correct: 1 },
+                    { id: 5, question: "وحدة قياس الأوزون هي:", options: ["جول", "دوبسون", "نيوتن"], correct: 1 },
+                    { id: 6, question: "مركبات CFC تسمى:", options: ["مركبات عضوية", "كلوروفلوروكربونات", "كربوهيدرات"], correct: 1 },
+                    { id: 7, question: "تكون الأوزون أعلى خط الاستواء بسبب:", options: ["انخفاض الحرارة", "شدة الإشعاع الشمسي", "قلة الأكسجين"], correct: 1 },
+                    { id: 8, question: "تكوّن الثقب فوق القارة القطبية بسبب:", options: ["دفء الجو", "برودة الجو الشديدة", "قرب الشمس"], correct: 1 },
+                    { id: 9, question: "الكتلة تختلف عن الوزن لأن الوزن يعتمد على:", options: ["الحجم", "الجاذبية", "اللون"], correct: 1 },
+                    { id: 10, question: "أحد فروع الكيمياء هو:", options: ["الكيمياء الحيوية", "علم الجغرافيا", "علم البحار"], correct: 0 },
+                    { id: 11, question: "الطريقة العلمية هي:", options: ["طريقة عشوائية", "أسلوب منظم لحل المشكلات", "تخمين"], correct: 1 },
+                    { id: 12, question: "الفرضية هي:", options: ["نتيجة نهائية", "تخمين قابل للاختبار", "قانون علمي"], correct: 1 },
+                    { id: 13, question: "القانون العلمي يصف:", options: ["سبب الظاهرة", "كيفية حدوث الظاهرة", "توقعات العلماء"], correct: 1 },
+                    { id: 14, question: "النظرية العلمية:", options: ["غير قابلة للاختبار", "مدعومة بأدلة قوية", "مجرد رأي"], correct: 1 },
+                    { id: 15, question: "البيانات الكمية تعتمد على:", options: ["الوصف", "الأرقام", "الرائحة"], correct: 1 },
+                    { id: 16, question: "البيانات الكيفية تعتمد على:", options: ["الأرقام", "الأجهزة", "الوصف"], correct: 2 },
+                    { id: 17, question: "زيادة UVB تسبب:", options: ["زيادة النباتات", "سرطان الجلد", "تصنيع الأوزون"], correct: 1 },
+                    { id: 18, question: "من أدوات المختبر:", options: ["نظارات السلامة", "المنظار الفلكي", "كاميرا فيديو"], correct: 0 },
+                    { id: 19, question: "استخدام النظارات في المختبر يحمي:", options: ["الأذنين", "العينين", "الأنف"], correct: 1 },
+                    { id: 20, question: "اجتماع مونتريال 1987 هدفه:", options: ["زيادة CFC", "حماية طبقة الأوزون", "إنتاج غازات جديدة"], correct: 1 },
+                    { id: 21, question: "الماء النقي يختلف عن ماء البحر لأن ماء البحر يحتوي على:", options: ["أكسجين فقط", "أملاح وشوائب", "هيدروجين نقي"], correct: 1 },
+                    { id: 22, question: "الحالة الصلبة تتميز بأن جسيماتها:", options: ["متباعدة", "متقاربة ومنتظمة", "تتحرك بحرية"], correct: 1 },
+                    { id: 23, question: "الغاز يختلف عن البخار بأن البخار:", options: ["لا ينضغط", "ينتج من تبخر السائل", "له كتلة أكبر"], correct: 1 },
+                    { id: 24, question: "من الخواص الفيزيائية:", options: ["القابلية للاحتراق", "اللون", "التفاعل مع الأحماض"], correct: 1 },
+                    { id: 25, question: "من الخواص الكيميائية:", options: ["الانصهار", "الكثافة", "التفاعل مع الأكسجين"], correct: 2 },
+                    { id: 26, question: "قانون حفظ الكتلة ينص على أن:", options: ["الكتلة تتغير", "الكتلة ثابتة قبل وبعد التفاعل", "الكتلة تعتمد على الحرارة"], correct: 1 },
+                    { id: 27, question: "الدليل على حدوث تفاعل قد يكون:", options: ["تغير اللون", "تغير الشكل", "تغير الحجم"], correct: 0 },
+                    { id: 28, question: "المخلوط المتجانس هو:", options: ["لا يمكن تمييز مكوناته", "مواد منفصلة", "صلب فقط"], correct: 0 },
+                    { id: 29, question: "العناصر ترتب في الجدول الدوري حسب:", options: ["العدد الكتلي", "العدد الذري", "الكثافة"], correct: 1 },
+                    { id: 30, question: "ملح الطعام هو:", options: ["NaH", "NaCl", "CaCl"], correct: 1 }
+                ],
+                medium: [
+                    { id: 31, question: "سبب استخدام CFC سابقًا هو:", options: ["أنها سامة", "مستقرة وغير قابلة للاشتعال", "رخيصة جدًا فقط"], correct: 1 },
+                    { id: 32, question: "سبب خطورتها هو:", options: ["احتواؤها على الهيدروجين", "انطلاق ذرات الكلور عند تفككها", "تفاعلها مع الماء"], correct: 1 },
+                    { id: 33, question: "ثبات الأوزون رغم تكوينه وتفككه يدل على:", options: ["نظام غير متزن", "تفاعل متزن", "تفاعل لحظي"], correct: 1 },
+                    { id: 34, question: "انخفاض الأوزون يؤدي إلى:", options: ["انخفاض الأشعة", "زيادة الأشعة UVB", "تكون الضباب"], correct: 1 },
+                    { id: 35, question: "الملاحظة في التجربة تعني:", options: ["تحليل البيانات", "تسجيل ما يحدث بالحواس", "كتابة الاستنتاج"], correct: 1 },
+                    { id: 36, question: "التجربة تهدف إلى:", options: ["اختبار الفرضية", "إثبات القانون", "الحصول على نتيجة فقط"], correct: 0 },
+                    { id: 37, question: "أحد أسباب ضرورة تكرار التجارب هو:", options: ["الحصول على نتائج ثابتة", "زيادة المتعة", "زيادة الفوضى"], correct: 0 },
+                    { id: 38, question: "كمية الأوزون تتأثر بـ:", options: ["الأشعة الشمسية", "زيادة الكربون", "زيادة الهيدروجين"], correct: 0 },
+                    { id: 39, question: "عند ذوبان الملح في الماء يكون الناتج:", options: ["مخلوط متجانس", "مركب جديد", "غاز"], correct: 0 },
+                    { id: 40, question: "الخاصية المكثفة هي التي لا تعتمد على:", options: ["كمية المادة", "نوع المادة", "اللون"], correct: 0 },
+                    { id: 41, question: "ذوبان الثلج مثال على:", options: ["تغير كيميائي", "تغير فيزيائي", "تحلل نووي"], correct: 1 },
+                    { id: 42, question: "مقارنة المخلوط المتجانس وغير المتجانس تعتمد على:", options: ["حالة المادة", "قابلية رؤية المكونات", "الوزن"], correct: 1 },
+                    { id: 43, question: "تفاعل تكون الراسب يدل على:", options: ["تغير فيزيائي", "تفاعل كيميائي", "ضغط منخفض"], correct: 1 },
+                    { id: 44, question: "قانون النسب المتضاعفة يربط بين:", options: ["العناصر والمخاليط", "النسب الكتلية للعناصر في المركب", "الحالات الفيزيائية"], correct: 1 },
+                    { id: 45, question: "الذرة تتكون من:", options: ["نواة فقط", "إلكترونات فقط", "نواة وإلكترونات"], correct: 2 },
+                    { id: 46, question: "الكثافة تُحسب من العلاقة:", options: ["الكتلة ÷ الحجم", "الحجم ÷ الزمن", "القوة × المسافة"], correct: 0 },
+                    { id: 47, question: "استخدام جهاز STM ساعد العلماء على:", options: ["رؤية الذرات", "قياس الطول", "حساب الكتلة"], correct: 0 },
+                    { id: 48, question: "الأشعة UVB تسبب:", options: ["زيادة النمو", "حروق الجلد", "زيادة الأكسجين"], correct: 1 },
+                    { id: 49, question: "البحث التطبيقي يهدف إلى:", options: ["اكتشاف حقائق", "استخدام المعرفة لحل المشكلات", "جمع بيانات فقط"], correct: 1 },
+                    { id: 50, question: "البحث النظري يهدف إلى:", options: ["فهم المبادئ الأساسية", "إنتاج دواء", "تصنيع مادة"], correct: 0 },
+                    { id: 51, question: "أداة الفصل المناسبة للمحاليل هي:", options: ["المغناطيس", "التقطير", "الغربال"], correct: 1 },
+                    { id: 52, question: "عند مقارنة الكتلة والوزن نجد أن الوزن:", options: ["ثابت دائمًا", "يتغير بتغير الجاذبية", "لا يعتمد على المكان"], correct: 1 },
+                    { id: 53, question: "تكون الأوزون يحدث عندما يتفكك O₂ إلى:", options: ["3 ذرات", "ذرتي أكسجين + ذرة", "جزيء H₂O"], correct: 1 },
+                    { id: 54, question: "حجم الغاز يزداد عند:", options: ["تقليل الحرارة", "زيادة الحرارة", "تقليل الضغط"], correct: 1 },
+                    { id: 55, question: "السبب في اختلاف كثافة المواد هو:", options: ["اختلاف عدد الذرات", "اختلاف الطول", "اختلاف اللون"], correct: 0 }
+                ],
+                hard: [
+                    { id: 56, question: "ارتفاع UVB يؤثر على السلسلة الغذائية لأنه:", options: ["يزيد النباتات", "يضر العوالق البحرية", "يزيد الغلاف الجوي"], correct: 1 },
+                    { id: 57, question: "تؤدي برودة القطب إلى تكوّن:", options: ["غيوم جليدية تنشط الكلور", "غازات خاملة", "بخار ماء كثيف"], correct: 0 },
+                    { id: 58, question: "يُعد فقدان الأوزون خطرًا على الحياة لأنه يسمح بـ:", options: ["مرور الحرارة", "مرور الأشعة الضارة", "زيادة الضغط"], correct: 1 },
+                    { id: 59, question: "يفسر العلماء ثبات نسب الأوزون بأنه:", options: ["تفاعل أحادي", "تفاعل ضوئي متزن", "تفاعل غير مستقر"], correct: 1 },
+                    { id: 60, question: "التغير الكيميائي يتميز بأنه:", options: ["ينتج مادة جديدة", "يغير الشكل فقط", "لا يتطلب طاقة"], correct: 0 },
+                    { id: 61, question: "مقارنة الخواص الفيزيائية والكيميائية تساعد على:", options: ["تحديد نوع المادة", "زيادة الكتلة", "تقليل الحجم"], correct: 0 },
+                    { id: 62, question: "عند تفسير سبب تكوّن الأوزون فوق الاستواء يعتمد العلماء على:", options: ["تفاعلات كهربائية", "شدة الإشعاع الشمسي", "الماء"], correct: 1 },
+                    { id: 63, question: "عند تحليل العلاقة بين كتلة المادة وحجمها نستنتج:", options: ["الحجم ثابت", "الكثافة = الكتلة ÷ الحجم", "الكتلة = الحجم ÷ الطاقة"], correct: 1 },
+                    { id: 64, question: "التفكير العلمي يتطلب:", options: ["رفض الأدلة", "الاعتماد على المنطق", "تكرار نفس الخطوات فقط"], correct: 1 },
+                    { id: 65, question: "تحليل البيانات يساعد على:", options: ["الوصول لاستنتاج صحيح", "زيادة كتلة المادة", "تغيير الفرضية دائمًا"], correct: 0 },
+                    { id: 66, question: "عند تقييم الفرضية يجب أن تكون:", options: ["بلا اختبار", "قابلة للتحقق", "منسوخة من كتاب"], correct: 1 },
+                    { id: 67, question: "استخدام جهاز STM أحدث ثورة لأنه:", options: ["يكشف الطيف", "يمكن من رؤية الذرات مباشرة", "يقيس الطاقة فقط"], correct: 1 },
+                    { id: 68, question: "ثبات تركيب المادة يدل على أنها:", options: ["مخلوط", "مادة نقية", "غاز"], correct: 1 },
+                    { id: 69, question: "تحديد سبب تقلص الأوزون يعتمد على:", options: ["ملاحظة الرياح", "دراسة المركبات الكيميائية", "تحليل الصخور"], correct: 1 },
+                    { id: 70, question: "تفسير سبب استقرار بعض المواد يعتمد على:", options: ["نوع الروابط", "الشكل", "الطول"], correct: 0 },
+                    { id: 71, question: "أحد أسباب استخدام الأدلة العلمية هو:", options: ["زيادة الطول", "الحصول على نتائج صحيحة", "تغيير المواد"], correct: 1 },
+                    { id: 72, question: "توقع العلماء لخطورة الأشعة UVB يعتمد على:", options: ["تفاعلات ضوئية", "تفاعلات حرارية", "بيانات صوتية"], correct: 0 },
+                    { id: 73, question: "انخفاض الأوزون يؤثر على النظام البيئي من خلال:", options: ["زيادة الأسماك", "إضعاف العوالق البحرية", "زيادة الجبال"], correct: 1 },
+                    { id: 74, question: "التغير الفيزيائي يختلف عن الكيميائي في أنه:", options: ["لا ينتج مادة جديدة", "ينتج حرارة دائمًا", "يغير الذرات"], correct: 0 },
+                    { id: 75, question: "تعتمد قدرة المادة على التفاعل مع الأكسجين على:", options: ["كتلتها", "تركيبها الكيميائي", "لونها"], correct: 1 },
+                    { id: 76, question: "التحليل العلمي يساعد في:", options: ["تكوين فرضيات جديدة", "زيادة الحرارة", "إلغاء القوانين"], correct: 0 },
+                    { id: 77, question: "عند تقييم الأدلة يجب الانتباه إلى:", options: ["مصدر البيانات", "لون الورق", "نوع الخط"], correct: 0 },
+                    { id: 78, question: "المواد التي لها تركيب ثابت هي:", options: ["مخاليط", "مواد نقية", "مواد متغيرة"], correct: 1 },
+                    { id: 79, question: "ذوبان الملح في الماء مثال على:", options: ["تغير فيزيائي", "تغير نووي", "تفاعل احلال"], correct: 0 },
+                    { id: 80, question: "دراسة تأثير UVB على الجلد مثال على:", options: ["كيمياء حيوية", "كيمياء نووية", "كيمياء عضوية"], correct: 0 }
+                ]
+            },
+            2: { // قسم 2: الجدول الدوري والروابط (من الملف 7)
+                easy: [
+                    { id: 81, question: "الجدول الدوري يرتب العناصر حسب:", options: ["العدد الكتلي", "العدد الذري", "عدد النظائر"], correct: 1 },
+                    { id: 82, question: "الدورة في الجدول الدوري تمثل:", options: ["صفًا أفقيًا", "عمودًا", "مجموعة عناصر متشابهة"], correct: 0 },
+                    { id: 83, question: "المجموعة في الجدول الدوري تمثل:", options: ["صفًا", "عمودًا", "عنصرين فقط"], correct: 1 },
+                    { id: 84, question: "عناصر المجموعة الواحدة تتشابه في:", options: ["عدد البروتونات", "عدد إلكترونات التكافؤ", "عدد النيوترونات"], correct: 1 },
+                    { id: 85, question: "الفلزات تقع في:", options: ["اليسار", "اليمين", "الوسط فقط"], correct: 0 },
+                    { id: 86, question: "اللافلزات تقع في:", options: ["اليسار", "اليمين", "أسفل الجدول"], correct: 1 },
+                    { id: 87, question: "أنصاف الفلزات تقع:", options: ["في الوسط", "اليسار", "أعلى الجدول"], correct: 0 },
+                    { id: 88, question: "أكبر نصف قطر ذري يكون للعناصر في:", options: ["أعلى اليمين", "أسفل اليسار", "منتصف الجدول"], correct: 1 },
+                    { id: 89, question: "طاقة التأين هي:", options: ["طاقة اكتساب إلكترون", "طاقة فقد إلكترون", "طاقة بروتون"], correct: 1 },
+                    { id: 90, question: "الكهروسالبية هي قدرة الذرة على:", options: ["فقد البروتون", "جذب الإلكترونات", "فقد النيوترون"], correct: 1 },
+                    { id: 91, question: "العناصر الأكثر كهروسالبية توجد في:", options: ["أسفل اليسار", "أعلى اليمين", "وسط الجدول"], correct: 1 },
+                    { id: 92, question: "الرابطة الأيونية تنتج من:", options: ["مشاركة إلكترونات", "انتقال إلكترون", "اندماج أنوية"], correct: 1 },
+                    { id: 93, question: "الرابطة التساهمية تنتج من:", options: ["مشاركة إلكترونات", "انتقال إلكترونات", "فقد بروتون"], correct: 0 },
+                    { id: 94, question: "جزيء H₂ يحتوي على رابطة:", options: ["أيونية", "تساهمية أحادية", "ثلاثية"], correct: 1 },
+                    { id: 95, question: "جزيء N₂ يحتوي على رابطة:", options: ["أحادية", "ثنائية", "ثلاثية"], correct: 2 },
+                    { id: 96, question: "جزيء O₂ يحتوي على رابطة:", options: ["أحادية", "ثنائية", "ثلاثية"], correct: 1 },
+                    { id: 97, question: "الرابطة القطبية تحدث عندما يكون الفرق في الكهروسالبية:", options: ["كبير جدًا", "صغير", "صفر"], correct: 1 },
+                    { id: 98, question: "جزيء CO₂ شكله:", options: ["خطي", "منحني", "هرمي"], correct: 0 },
+                    { id: 99, question: "جزيء H₂O شكله:", options: ["خطي", "منحني", "رباعي"], correct: 1 },
+                    { id: 100, question: "الرابطة الفلزية توجد في:", options: ["اللافلزات", "المعادن", "الغازات"], correct: 1 },
+                    { id: 101, question: "الإلكترونات الحرة في الفلزات تسمى:", options: ["سحابة إلكترونية", "نواة", "بروتونات"], correct: 0 },
+                    { id: 102, question: "القوى بين الجزيئية تشمل:", options: ["روابط داخل الجزيء", "قوى فان ديرفالز", "بروتونات"], correct: 1 },
+                    { id: 103, question: "أقوى الروابط هي:", options: ["الفلزية", "الأيونية", "التساهمية الثلاثية"], correct: 2 },
+                    { id: 104, question: "الإلكترونات المشتركة في رابطة تساهمية تكون:", options: ["قرب العنصر الأقل سالبية", "قرب العنصر الأكثر كهروسالبية", "موزعة بالتساوي دائمًا"], correct: 1 },
+                    { id: 105, question: "الرابطة الهيدروجينية توجد في:", options: ["H₂ فقط", "H مع N أو O أو F", "بين الفلزات"], correct: 1 },
+                    { id: 106, question: "جميع الغازات النبيلة تكون:", options: ["ثنائية الذرة", "خاملة", "أيونية"], correct: 1 },
+                    { id: 107, question: "أشباه الفلزات تجمع بين صفات:", options: ["الفلزات واللافلزات", "الغازات والمعادن", "الفلزات فقط"], correct: 0 },
+                    { id: 108, question: "أي العناصر أكثر كهروسالبية؟", options: ["الفلور", "الصوديوم", "الألومنيوم"], correct: 0 },
+                    { id: 109, question: "السبب في صغر نصف قطر الفلور هو:", options: ["كتلة كبيرة", "قوة جذب عالية", "فقد الإلكترونات"], correct: 1 },
+                    { id: 110, question: "المركب الأيوني يتكون من:", options: ["غير فلز + غير فلز", "فلز + غير فلز", "فلز + فلز"], correct: 1 }
+                ],
+                medium: [
+                    { id: 111, question: "الفرق في الكهروسالبية بين Na و Cl يدل على تكوّن رابطة:", options: ["تساهمية", "أيونية", "فلزية"], correct: 1 },
+                    { id: 112, question: "إذا كان نصف قطر العنصر A أكبر من B، فهذا يعني أن:", options: ["A في أعلى الجدول", "A في أسفل الجدول", "A في يمين الجدول"], correct: 1 },
+                    { id: 113, question: "عند الانتقال من اليسار إلى اليمين في دورة واحدة، نصف القطر:", options: ["يزداد", "يقل", "يبقى ثابت"], correct: 1 },
+                    { id: 114, question: "عند الانتقال لأسفل مجموعة واحدة، نصف القطر:", options: ["يقل", "يزداد", "لا يتغير"], correct: 1 },
+                    { id: 115, question: "سبب تناقص نصف القطر عبر الدورة هو:", options: ["زيادة مستوى الطاقة", "زيادة قوة جذب النواة", "تقليل الإلكترونات"], correct: 1 },
+                    { id: 116, question: "طاقة التأين تزداد في الاتجاه:", options: ["أسفل اليسار", "أعلى اليمين", "أسفل اليمين"], correct: 1 },
+                    { id: 117, question: "إذا كان الفرق في الكهروسالبية بين عنصرين يساوي صفرًا فالرابطة تكون:", options: ["تساهمية غير قطبية", "قطبية", "أيونية"], correct: 0 },
+                    { id: 118, question: "الشكل الهندسي لجزيء NH₃ هو:", options: ["خطي", "هرمي", "رباعي"], correct: 1 },
+                    { id: 119, question: "السبب في أن H₂O منحني هو وجود:", options: ["إلكترونات قليلة", "زوجين غير رابطين", "روابط أيونية"], correct: 1 },
+                    { id: 120, question: "جزيء CH₄ يمتلك شكلًا:", options: ["هرمي", "رباعي السطوح", "منحني"], correct: 1 },
+                    { id: 121, question: "في الرابطة التساهمية القطبية الإلكترونات تكون:", options: ["مشتركة بالتساوي", "أقرب لذرة أكثر سالبية", "ليست مشتركة"], correct: 1 },
+                    { id: 122, question: "المركب MgCl₂ يتكون من:", options: ["Mg⁺ و Cl⁻", "Mg²⁺ و Cl⁻", "Mg³⁺ و Cl²⁻"], correct: 1 },
+                    { id: 123, question: "الرابطة التساهمية الثنائية تحتوي على:", options: ["زوج إلكتروني واحد", "زوجين إلكترونيين", "ثلاثة أزواج"], correct: 1 },
+                    { id: 124, question: "الرابطة التساهمية الثلاثية تحتوي على:", options: ["زوجين", "ثلاثة أزواج", "أربعة أزواج"], correct: 1 },
+                    { id: 125, question: "زيادة قوة الرابطة التساهمية ترتبط بزيادة:", options: ["طول الرابطة", "قصر الرابطة", "عدم القطبية"], correct: 1 },
+                    { id: 126, question: "المركب الذي يحتوي على روابط هيدروجينية يمتلك نقط غليان:", options: ["منخفضة", "عالية", "ثابتة"], correct: 1 },
+                    { id: 127, question: "الشبكة الفلزية تسبب خصائص مثل:", options: ["الهشاشة", "التوصيل الكهربائي", "العزل"], correct: 1 },
+                    { id: 128, question: "أقل العناصر طاقة تأين هو:", options: ["السيزيوم", "الهيدروجين", "الأكسجين"], correct: 0 },
+                    { id: 129, question: "جزيء CO يمتلك رابطة:", options: ["أحادية", "ثلاثية", "ثنائية قطبية"], correct: 2 },
+                    { id: 130, question: "أي الجزيئات التالية قطبي؟", options: ["CO₂", "CH₄", "NH₃"], correct: 2 },
+                    { id: 131, question: "عند رسم لويس لعنصر في المجموعة 2 نضع:", options: ["إلكترون واحد", "إلكترونان", "ثلاثة إلكترونات"], correct: 1 },
+                    { id: 132, question: "المركب KF يتكون نتيجة انتقال إلكترون من:", options: ["K إلى F", "F إلى K", "بينهما بالتساوي"], correct: 0 },
+                    { id: 133, question: "نقطة الانصهار العالية في الأملاح الأيونية سببها:", options: ["الروابط الضعيفة", "التجاذب القوي بين الأيونات", "عدم القطبية"], correct: 1 },
+                    { id: 134, question: "الرابطة الفلزية تجعل الفلزات:", options: ["عازلة", "قابلة للطرق والسحب", "قابلة للكسر"], correct: 1 },
+                    { id: 135, question: "إذا كان الفرق بين الكهروسالبية 1.6 فإن الرابطة:", options: ["غير قطبية", "تساهمية قطبية", "أيونية"], correct: 2 },
+                    { id: 136, question: "تزداد الكهروسالبية كلما:", options: ["اقتربنا من الفلور", "نزلنا أسفل المجموعة", "اتجهنا يسارًا"], correct: 0 },
+                    { id: 137, question: "المركب SiO₂ يحتوي على رابطة:", options: ["تساهمية", "أيونية", "فلزية"], correct: 0 },
+                    { id: 138, question: "الشكل الهندسي لجزيء SO₂ هو:", options: ["خطي", "منحني", "هرمي"], correct: 1 },
+                    { id: 139, question: "جزيء BF₃ يمتلك هندسة:", options: ["رباعية", "مثلثية مستوية", "منحنية"], correct: 1 },
+                    { id: 140, question: "جزيء PCl₅ شكله:", options: ["رباعي", "ثلاثي هرمي", "ثنائي هرمي ثلاثي"], correct: 2 },
+                    { id: 141, question: "سبب اختلاف كثافة المعادن هو اختلاف:", options: ["عدد البروتونات", "ترتيب الذرات في الشبكة", "الروابط التساهمية"], correct: 1 },
+                    { id: 142, question: "الجزيئات القطبية تمتلك عزم ثنائي قطب بسبب:", options: ["تساوي الكهروسالبية", "عدم تماثل الشحنات", "فقد الإلكترونات"], correct: 1 },
+                    { id: 143, question: "الجزيء غير القطبي غالبًا يكون:", options: ["متناظرًا", "منحنيًا", "هرميًا"], correct: 0 },
+                    { id: 144, question: "قوى لندن هي قوى:", options: ["قوية", "ضعيفة", "مساوية للرابطة"], correct: 1 },
+                    { id: 145, question: "أعلى نقطة غليان تكون للجزيئات ذات:", options: ["أقل كتلة", "أقوى قوى بين الجزيئات", "روابط قصيرة"], correct: 1 }
+                ],
+                hard: [
+                    { id: 146, question: "تفسير قوة الرابطة الأيونية يعتمد على علاقة طردية بين:", options: ["الشحنة والمسافة", "الكتلة والمسافة", "الكتلة والسرعة"], correct: 0 },
+                    { id: 147, question: "تزداد قوة الرابطة التساهمية كلما كان طول الرابطة:", options: ["أكبر", "أصغر", "ثابتًا"], correct: 1 },
+                    { id: 148, question: "في سلسلة هالوجينات، تزداد الكهروسالبية باتجاه:", options: ["الأعلى", "الأسفل", "اليسار"], correct: 0 },
+                    { id: 149, question: "الفرق الكبير في الكهروسالبية يؤدي إلى:", options: ["رابطة تساهمية", "رابطة أيونية", "رابطة فلزية"], correct: 1 },
+                    { id: 150, question: "سبب انحناء جزيء SO₂ هو:", options: ["اشتراك إلكتروني ضعيف", "وجود زوج غير رابط", "قطبية منخفضة"], correct: 1 },
+                    { id: 151, question: "سبب اختلاف الشكل الهندسي بين NH₃ و CH₄ هو أن NH₃ يحتوي على:", options: ["رابطة ثلاثية", "زوج غير رابط", "روابط قصيرة"], correct: 1 },
+                    { id: 152, question: "المركب HF يمتلك روابط هيدروجينية قوية بسبب:", options: ["حجم الذرة", "فرق كهروسالبية كبير", "عدم تماثل الشكل"], correct: 1 },
+                    { id: 153, question: "قوى ثنائية القطب--ثنائي القطب أقوى عندما يكون الجزيء:", options: ["متناظرًا", "قطبيًا", "غير قطبي"], correct: 1 },
+                    { id: 154, question: "تزداد اللزوجة بزيادة:", options: ["قوى التجاذب بين الجزيئات", "الكتلة الذرية فقط", "عدد البروتونات"], correct: 0 },
+                    { id: 155, question: "السبب في ارتفاع نقطة غليان H₂O مقارنة بـ H₂S هو وجود:", options: ["روابط تساهمية", "روابط هيدروجينية", "روابط فلزية"], correct: 1 },
+                    { id: 156, question: "العناصر الانتقالية تُظهر ألوانًا بسبب انتقالات في:", options: ["المدارات s", "المدارات d", "المستوى الأول"], correct: 1 },
+                    { id: 157, question: "التوصيل الكهربائي في الفلزات يحدث بسبب:", options: ["النواة", "الإلكترونات الحرة", "قوة النواة"], correct: 1 },
+                    { id: 158, question: "المركبات غير القطبية تذوب في:", options: ["الماء", "الزيوت", "الأملاح"], correct: 1 },
+                    { id: 159, question: "إذا كان الفرق في الكهروسالبية بين عنصرين 0.8، فالرابطة تكون:", options: ["غير قطبية", "تساهمية قطبية", "أيونية"], correct: 1 },
+                    { id: 160, question: "انخفاض نصف القطر عبر الدورة يدل على زيادة:", options: ["التنافر", "شحنة النواة", "الروابط"], correct: 1 },
+                    { id: 161, question: "إذا كان عنصر يمتلك 7 إلكترونات تكافؤ، فهو شديد التفاعل لأنه:", options: ["يحتاج إلكترونًا واحدًا", "يفقد إلكترونين", "يمتلك نواة كبيرة"], correct: 0 },
+                    { id: 162, question: "الشكل الرباعي السطوح ينتج عندما تكون الروابط:", options: ["3", "4", "5"], correct: 1 },
+                    { id: 163, question: "السبب في أن CO₂ غير قطبي رغم احتوائه على روابط قطبية هو:", options: ["اختلاف الذرات", "التماثل", "قوة الروابط"], correct: 1 },
+                    { id: 164, question: "الرابطة الثلاثية أقوى من الثنائية لأنها تحتوي على:", options: ["إلكترونات أقل", "إلكترونات أكثر", "زوج غير رابط"], correct: 1 },
+                    { id: 165, question: "الرابطة الأقل قوة بين الجزيئات هي:", options: ["الهيدروجينية", "ثنائية القطب", "قوى لندن"], correct: 2 },
+                    { id: 166, question: "ذوبانية الأملاح العالية في الماء سببها:", options: ["قطبية الماء", "الروابط الفلزية", "روابط قصيرة"], correct: 0 },
+                    { id: 167, question: "العنصر الذي يشكل روابط أكثر يكون عادة:", options: ["أقل سالبية", "أكثر سالبية", "أكبر نصف قطر"], correct: 1 },
+                    { id: 168, question: "ذرة ذات نصف قطر صغير عادة تمتلك:", options: ["طاقة تأين عالية", "نشاطًا منخفضًا", "روابط فلزية"], correct: 0 },
+                    { id: 169, question: "قوة الرابطة تعتمد على:", options: ["نوع الذرات", "فرق الكهروسالبية وطول الرابطة", "عدد البروتونات فقط"], correct: 1 },
+                    { id: 170, question: "الشكل المنحني يدل على وجود:", options: ["تنافر إلكتروني", "تماثل", "روابط قوية فقط"], correct: 0 },
+                    { id: 171, question: "أقوى الروابط التساهمية هي:", options: ["الأحادية", "الثنائية", "الثلاثية"], correct: 2 },
+                    { id: 172, question: "زيادة درجة الانصهار ترتبط بـ:", options: ["زيادة قوى التجاذب", "نقص الإلكترونات", "زيادة الكتلة فقط"], correct: 0 },
+                    { id: 173, question: "الروابط في الفلزات تجعلها قادرة على:", options: ["الانكسار بسهولة", "نقل الحرارة", "تكوين بلورات غازية"], correct: 1 },
+                    { id: 174, question: "المركبات الجزيئية تختلف عن الأيونية لأنها:", options: ["لا تحتوي على أيونات", "عالية الانصهار", "توصل الكهرباء دائمًا"], correct: 0 },
+                    { id: 175, question: "الرابطة التساهمية القطبية تنتج عندما:", options: ["يشترك عنصران بنفس الكهروسالبية", "يكون الفرق في الكهروسالبية متوسطًا", "يكون الفرق كبيرًا"], correct: 1 },
+                    { id: 176, question: "السبب في أن N₂ مستقر جدًا هو احتواؤه على:", options: ["رابطة أحادية", "رابطة ثلاثية قوية", "رابطة ثنائية"], correct: 1 },
+                    { id: 177, question: "الارتباط بين الذرات في الشبكات التساهمية ينتج مركبات:", options: ["هشة", "صلبة جدًا", "منصهرة بسهولة"], correct: 1 },
+                    { id: 178, question: "أي الجزيئات التالية يمتلك أكبر قوة تجاذب؟", options: ["NH₃", "CH₄", "CO₂"], correct: 0 },
+                    { id: 179, question: "تزداد قطبية الجزيء بزيادة:", options: ["التماثل", "فرق الكهروسالبية", "عدد البروتونات"], correct: 1 },
+                    { id: 180, question: "سبب ارتفاع حرارة تبخر الماء هو وجود:", options: ["روابط أيونية", "روابط هيدروجينية", "روابط فلزية"], correct: 1 }
+                ]
+            },
+            3: { // قسم 3: حالات المادة (من الملف 3)
+                easy: [
+                    { id: 181, question: "الخاصية التي يمكن ملاحظتها دون تغيير تركيب المادة هي:", options: ["الخاصية الكيميائية", "الخاصية الفيزيائية", "الخاصية النووية"], correct: 1 },
+                    { id: 182, question: "من أمثلة الخواص الفيزيائية للمادة:", options: ["القابلية للاحتراق", "اللون", "التفاعل مع الماء"], correct: 1 },
+                    { id: 183, question: "الخواص الكيميائية تتعلق بـ:", options: ["شكل المادة", "قدرة المادة على تكوين مواد جديدة", "كتلة المادة فقط"], correct: 1 },
+                    { id: 184, question: "الحالة التي تكون فيها الجسيمات متقاربة ومنظمة هي:", options: ["الغاز", "الصلب", "السائل"], correct: 1 },
+                    { id: 185, question: "الحالة التي تكون فيها الجسيمات متقاربة لكن غير منتظمة هي:", options: ["الغاز", "السائل", "الصلب"], correct: 1 },
+                    { id: 186, question: "الحالة التي تكون فيها الجسيمات متباعدة جدًا هي:", options: ["الصلب", "الغاز", "السائل"], correct: 1 },
+                    { id: 187, question: "البخار هو:", options: ["غاز طبيعي", "غاز ناتج عن تبخر مادة سائلة", "مادة صلبة"], correct: 1 },
+                    { id: 188, question: "من أمثلة التغير الفيزيائي:", options: ["احتراق ورقة", "صدأ الحديد", "انصهار الجليد"], correct: 2 },
+                    { id: 189, question: "من أمثلة التغير الكيميائي:", options: ["ذوبان السكر", "تبخر الماء", "احتراق الخشب"], correct: 2 },
+                    { id: 190, question: "قانون حفظ الكتلة ينص على أن:", options: ["الكتلة تظهر فجأة", "الكتلة لا تفنى ولا تُستحدث", "الكتلة تعتمد على الحرارة"], correct: 1 },
+                    { id: 191, question: "ماء البحر يُعد:", options: ["مخلوط متجانس", "مركب", "عنصر"], correct: 0 },
+                    { id: 192, question: "الماء النقي يختلف عن ماء البحر بسبب وجود:", options: ["مواد مذابة في ماء البحر", "عناصر جديدة", "غاز الهيدروجين"], correct: 0 },
+                    { id: 193, question: "المخلوط غير المتجانس يتميز بـ:", options: ["عدم تمييز مكوناته", "سهولة رؤية مكوناته", "وجود مكون واحد"], correct: 1 },
+                    { id: 194, question: "من طرق فصل المخاليط:", options: ["الاحتراق", "التقطير", "التعفن"], correct: 1 },
+                    { id: 195, question: "خاصية الكثافة تعتمد على:", options: ["اللون", "الكتلة والحجم", "الضغط"], correct: 1 },
+                    { id: 196, question: "وحدة قياس الكتلة هي:", options: ["اللتر", "المول", "الغرام"], correct: 2 },
+                    { id: 197, question: "الغاز قابل للانضغاط لأن:", options: ["جسيماته متقاربة", "جسيماته متباعدة", "كثافته عالية"], correct: 1 },
+                    { id: 198, question: "يتغير حجم السائل بحسب:", options: ["شكل الإناء", "درجة اللون", "نوع الرائحة"], correct: 0 },
+                    { id: 199, question: "الخاصية التي تحدد قدرة المادة على تكوين مواد جديدة هي:", options: ["خاصية فيزيائية", "خاصية نووية", "خاصية كيميائية"], correct: 2 },
+                    { id: 200, question: "الصلب يتميز بأنه له:", options: ["شكل ثابت", "حجم متغير", "ضغط منخفض"], correct: 0 },
+                    { id: 201, question: "من أمثلة المخاليط المتجانسة:", options: ["السلطة", "الهواء", "الماء الصافي"], correct: 1 },
+                    { id: 202, question: "من أمثلة المخاليط غير المتجانسة:", options: ["الهواء", "الفضة", "الرمل والماء"], correct: 2 },
+                    { id: 203, question: "تعتمد سرعة انتشار الجزيئات على:", options: ["درجة الحرارة", "لون المادة", "الشكل"], correct: 0 },
+                    { id: 204, question: "التغير الفيزيائي لا ينتج:", options: ["تغير في الحجم", "مادة جديدة", "تغير في الشكل"], correct: 1 },
+                    { id: 205, question: "التغير الكيميائي ينتج:", options: ["مادة جديدة", "تغيير الحالة فقط", "تغيير الحجم"], correct: 0 },
+                    { id: 206, question: "من الخواص الكيميائية للحديد:", options: ["اللون", "التفاعل مع الأكسجين لإنتاج الصدأ", "الكثافة"], correct: 1 },
+                    { id: 207, question: "الماء يتجمد عند:", options: ["0°C", "10°C", "100°C"], correct: 0 },
+                    { id: 208, question: "الماء يغلي عند:", options: ["0°C", "25°C", "100°C"], correct: 2 },
+                    { id: 209, question: "الكثافة خاصية:", options: ["فيزيائية", "كيميائية", "نووية"], correct: 0 },
+                    { id: 210, question: "التفاعل الكيميائي يتطلب:", options: ["تكوين روابط جديدة", "تغير الشكل فقط", "ضغط مرتفع دائمًا"], correct: 0 }
+                ],
+                medium: [
+                    { id: 211, question: "عند مقارنة خاصية الكثافة بين مادتين فإن المادة الأعلى كثافة:", options: ["تطفو", "تغوص", "تتبخر"], correct: 1 },
+                    { id: 212, question: "السبب في اختلاف شكل السائل عن الصلب هو:", options: ["ضعف قوى التجاذب بين الجزيئات في السائل", "تغير الكتلة", "زيادة الحرارة دائمًا"], correct: 0 },
+                    { id: 213, question: "عند زيادة درجة الحرارة فإن حركة الجسيمات:", options: ["تقل", "تبقى ثابتة", "تزداد"], correct: 2 },
+                    { id: 214, question: "زيادة الضغط على الغاز يؤدي إلى:", options: ["زيادة حجمه", "نقص حجمه", "بقاء حجمه ثابتًا"], correct: 1 },
+                    { id: 215, question: "ذوبان الملح في الماء يعتبر:", options: ["تغير كيميائي", "تغير نووي", "تغير فيزيائي"], correct: 2 },
+                    { id: 216, question: "يدل ظهور راسب في تفاعل على حدوث:", options: ["تغير فيزيائي", "تغير كيميائي", "تبخر"], correct: 1 },
+                    { id: 217, question: "عند انصهار مادة صلبة فإن جزيئاتها:", options: ["تقترب", "تبتعد وتزداد طاقتها", "تتحد كيميائيًا"], correct: 1 },
+                    { id: 218, question: "التقطير يعتمد على اختلاف:", options: ["اللون", "درجة الغليان", "الكتلة"], correct: 1 },
+                    { id: 219, question: "لفصل الرمل عن الماء نستخدم:", options: ["التبخير", "الترشيح", "التقطير"], correct: 1 },
+                    { id: 220, question: "إذا تغيرت زيادة الكتلة والحجم بنفس النسبة فإن الكثافة:", options: ["تزداد", "تتناقص", "تبقى ثابتة"], correct: 2 },
+                    { id: 221, question: "عملية صدأ الحديد مثال على:", options: ["تغير فيزيائي", "تغير كيميائي", "تجمد"], correct: 1 },
+                    { id: 222, question: "مادة كثافتها عالية تعني أن:", options: ["جزيئاتها متباعدة", "جزيئاتها متقاربة", "ليس لها حجم"], correct: 1 },
+                    { id: 223, question: "السبب في أن الغاز يملأ الوعاء هو:", options: ["كثافته العالية", "حركته السريعة", "شكله الثابت"], correct: 1 },
+                    { id: 224, question: "التغير الكيميائي يتضمن عادة:", options: ["تكوين حرارة أو ضوء", "انصهار", "تغير الشكل فقط"], correct: 0 },
+                    { id: 225, question: "المخلوط المتجانس يختلف عن غير المتجانس في أنه:", options: ["يصعب فصل مكوناته", "لونه ثابت دائمًا", "لا يمكن أن يكون سائلًا"], correct: 0 },
+                    { id: 226, question: "عند مقارنة الماء النقي وماء البحر فإن الاختلاف يعود إلى:", options: ["درجة الحرارة", "وجود أملاح مذابة", "الكثافة فقط"], correct: 1 },
+                    { id: 227, question: "تحويل المادة من الحالة الصلبة إلى الغاز مباشرة يسمى:", options: ["تبخر", "تسامي", "تكاثف"], correct: 1 },
+                    { id: 228, question: "الذوبانية تعتمد على:", options: ["درجة الحرارة", "اللون", "شكل الوعاء"], correct: 0 },
+                    { id: 229, question: "يدل تصاعد غاز في تفاعل على حدوث:", options: ["تغير فيزيائي", "تغير كيميائي", "تغير في الحجم فقط"], correct: 1 },
+                    { id: 230, question: "عند تسخين المادة تزداد طاقتها:", options: ["الحركية", "الكامنة", "النووية"], correct: 0 },
+                    { id: 231, question: "فصل الزيت عن الماء يتم بـ:", options: ["التقطير", "الترشيح", "قمع الفصل"], correct: 2 },
+                    { id: 232, question: "يدل تغير الرائحة على:", options: ["تغير فيزيائي", "تغير كيميائي", "تبخر"], correct: 1 },
+                    { id: 233, question: "عند الضغط على الغاز تقل المسافة بين الجزيئات لأن:", options: ["قوى التنافر تزداد", "الجزيئات متباعدة أساسًا", "الكتلة تقل"], correct: 1 },
+                    { id: 234, question: "ارتفاع الكثافة يعني:", options: ["تقارب الجسيمات", "تباعدها", "عدم وجودها"], correct: 0 },
+                    { id: 235, question: "التغير الفيزيائي يُستخدم في:", options: ["صنع المعادن", "تشكيل المواد دون تغيير تركيبها", "إنتاج مواد جديدة"], correct: 1 },
+                    { id: 236, question: "المطر الحمضي مثال على:", options: ["تغير فيزيائي", "تغير كيميائي", "تبخر"], correct: 1 },
+                    { id: 237, question: "ينتج الغاز عند تسخين بعض المواد لأن:", options: ["حجمها يزداد", "يحدث تغير كيميائي", "تنصهر"], correct: 1 },
+                    { id: 238, question: "عند مقارنة الخشب والزجاج من حيث الكثافة نجد الزجاج:", options: ["أقل كثافة", "أعلى كثافة", "بلا كتلة"], correct: 1 },
+                    { id: 239, question: "الماء مادة:", options: ["غير قطبية", "قطبية", "معدنية"], correct: 1 },
+                    { id: 240, question: "يؤثر الحجم على:", options: ["الكتلة", "الكثافة", "اللون"], correct: 1 }
+                ],
+                hard: [
+                    { id: 241, question: "عند تحليل العلاقة بين درجة الحرارة وحركة الجسيمات نجد أن الحركة:", options: ["تقل مع الزيادة", "تزداد طرديًا", "ثابتة"], correct: 1 },
+                    { id: 242, question: "السبب في أن المواد الصلبة لها كثافة أعلى هو:", options: ["طاقتها الحركية أعلى", "جسيماتها متراصة بقوة", "عدد إلكتروناتها كبير"], correct: 1 },
+                    { id: 243, question: "يمكن تفسير الطفو باستخدام:", options: ["خاصية اللون", "مبدأ الكثافة", "درجة الغليان"], correct: 1 },
+                    { id: 244, question: "تحليل تغير اللون والرائحة في تفاعل يدل على:", options: ["تغيير حجم المادة", "حدوث تغير كيميائي", "ضعف التجاذب"], correct: 1 },
+                    { id: 245, question: "عندما تتغير خصائص المادة دون تغير تركيبها فإن:", options: ["الروابط الكيميائية تتكسر", "التغير فيزيائي", "المادة تتحلل"], correct: 1 },
+                    { id: 246, question: "عند مقارنة السائل والغاز، يُلاحظ أن الغاز لديه:", options: ["قوى تجاذب قوية", "قوى تجاذب ضعيفة جدًا", "جسيمات ثابتة"], correct: 1 },
+                    { id: 247, question: "تحليل التغيرات في حرارة التفاعل يدل على:", options: ["نوع الرابطة", "حدوث تغير كيميائي", "كمية الشوائب"], correct: 1 },
+                    { id: 248, question: "صعود الدخان من التفاعل يشير إلى:", options: ["تكوين مادة غازية", "انخفاض الحرارة", "تغير الشكل"], correct: 0 },
+                    { id: 249, question: "تفاعل الفلزات مع الأحماض يدل على أنها:", options: ["خاملة", "نشطة كيميائيًا", "لافلزات"], correct: 1 },
+                    { id: 250, question: "بعض المواد تتحول من الصلب إلى الغاز مباشرة لأن:", options: ["طاقتها الحركية عالية", "كتلتها قليلة", "لا تحتوي على روابط"], correct: 0 },
+                    { id: 251, question: "عند مقارنة كثافة الخشب بالماء فإن خشب الطفو سببه:", options: ["كثافته أعلى", "كثافته أقل", "أن لونه أخف"], correct: 1 },
+                    { id: 252, question: "تقييم نوع التفاعل يعتمد على:", options: ["الألوان فقط", "الأدلة مثل الراسب والغاز والحرارة", "حجم الوعاء"], correct: 1 },
+                    { id: 253, question: "معدل انتشار الغاز أعلى من السائل لأن:", options: ["جزيئاته متقاربة", "جزيئاته متباعدة", "كتلته أكبر"], correct: 1 },
+                    { id: 254, question: "عند مقارنة الهواء والماء من حيث الكثافة نجد أن:", options: ["الهواء أكثر كثافة", "الماء أكثر كثافة", "متساويان"], correct: 1 },
+                    { id: 255, question: "تفسير حدوث التفاعلات الكيميائية يعتمد على:", options: ["كسر الروابط وتكوين روابط جديدة", "تغير اللون فقط", "زيادة الحجم"], correct: 0 },
+                    { id: 256, question: "التحليل الصحيح للتغير الكيميائي يتطلب:", options: ["مقارنة الأدلة", "معرفة اللون", "معرفة الحجم"], correct: 0 },
+                    { id: 257, question: "التغير في حركة الجسيمات دون تغير تركيب المادة يشير إلى:", options: ["تغير كيميائي", "تغير فيزيائي", "تفاعل نووي"], correct: 1 },
+                    { id: 258, question: "عند تسخين الغاز تتمدد الجسيمات لأنها:", options: ["تزداد كتلتها", "تزداد طاقتها الحركية", "تتحد مع الهواء"], correct: 1 },
+                    { id: 259, question: "تحليل سبب تبخر السوائل بسرعة عند الحرارة العالية يعود إلى:", options: ["ضعف الجاذبية", "زيادة الطاقة الحركية", "تغير اللون"], correct: 1 },
+                    { id: 260, question: "استنتاج نوع المادة بناءً على كثافتها يُعد مثالًا على:", options: ["الفهم البسيط", "التطبيق", "التحليل العلمي"], correct: 2 }
+                ]
+            },
+            4: { // قسم 4: العناصر والمركبات (من الملف 4)
+                easy: [
+                    { id: 261, question: "العنصر هو مادة:", options: ["تحتوي على عنصرين", "لا يمكن تحليلها إلى مواد أبسط", "تتغير دائمًا"], correct: 1 },
+                    { id: 262, question: "المركب هو مادة تتكون من:", options: ["عنصر واحد", "اتحاد عنصرين أو أكثر كيميائيًا", "مخلوط من المعادن"], correct: 1 },
+                    { id: 263, question: "يرمز للصوديوم بالرمز:", options: ["S", "Na", "N"], correct: 1 },
+                    { id: 264, question: "يرمز للكلور بالرمز:", options: ["Cl", "C", "Ca"], correct: 0 },
+                    { id: 265, question: "ملح الطعام يتكون من:", options: ["كربون وهيدروجين", "صوديوم وكلور", "حديد وأكسجين"], correct: 1 },
+                    { id: 266, question: "المخلوط المتجانس يتميز بـ:", options: ["تجانس مكوناته", "صعوبة ذوبانه", "انفصال طبقاته"], correct: 0 },
+                    { id: 267, question: "المخلوط غير المتجانس:", options: ["لا تظهر مكوناته", "تظهر مكوناته بوضوح", "مركب جديد"], correct: 1 },
+                    { id: 268, question: "الهواء مثال على:", options: ["مركب", "مخلوط متجانس", "مخلوط غير متجانس"], correct: 1 },
+                    { id: 269, question: "الرمل مع الماء مثال على:", options: ["محلول", "مركب", "مخلوط غير متجانس"], correct: 2 },
+                    { id: 270, question: "من طرق فصل الرمل عن الماء:", options: ["التقطير", "الترشيح", "التسامي"], correct: 1 },
+                    { id: 271, question: "المحلول يتكون من:", options: ["مذيب ومذاب", "عنصرين", "غاز فقط"], correct: 0 },
+                    { id: 272, question: "مثال على مذيب شائع هو:", options: ["الحديد", "الماء", "الرمل"], correct: 1 },
+                    { id: 273, question: "ذوبان السكر في الماء ينتج:", options: ["مخلوط غير متجانس", "محلول", "مركب جديد"], correct: 1 },
+                    { id: 274, question: "الماء يسمى:", options: ["مذاب", "مذيب", "راسب"], correct: 1 },
+                    { id: 275, question: "الخاصية التي تبقى ثابتة في المحاليل المتجانسة هي:", options: ["اللون", "التركيب", "الحجم"], correct: 1 },
+                    { id: 276, question: "المركب يختلف عن المخلوط بأنه:", options: ["يمكن فصل مكوناته فيزيائيًا", "مكوناته مرتبطة كيميائيًا", "لا يحتوي ذرات"], correct: 1 },
+                    { id: 277, question: "نسبة العناصر في المركب:", options: ["ثابتة دائمًا", "تتغير حسب الحجم", "تعتمد على الحرارة"], correct: 0 },
+                    { id: 278, question: "قانون النسب الثابتة ينص على أن المركب:", options: ["يتكون بنسب مختلفة", "له نسبة كتلية ثابتة لعناصره", "لا يحتوي ذرات"], correct: 1 },
+                    { id: 279, question: "الماء يتكون من عناصر بنسب كتلية:", options: ["متغيرة", "ثابتة", "تعتمد على الحجم"], correct: 1 },
+                    { id: 280, question: "غاز CO₂ يتكون من:", options: ["كربون وماء", "كربون وأكسجين", "هيدروجين وأكسجين"], correct: 1 },
+                    { id: 281, question: "المخلوط يمكن فصله بـ:", options: ["العمليات الكيميائية", "العمليات الفيزيائية", "الإشعاع"], correct: 1 },
+                    { id: 282, question: "من المخاليط الشائعة:", options: ["الحديد النقي", "الهواء", "ضوء الشمس"], correct: 1 },
+                    { id: 283, question: "رمز الأكسجين هو:", options: ["O", "Ox", "Og"], correct: 0 },
+                    { id: 284, question: "رمز الهيدروجين هو:", options: ["H", "He", "Hg"], correct: 0 },
+                    { id: 285, question: "رمز الكربون هو:", options: ["Cr", "C", "Ca"], correct: 1 },
+                    { id: 286, question: "المحلول المخفف يحتوي على:", options: ["كمية قليلة من المذاب", "كمية كبيرة", "لا يحتوي مذاب"], correct: 0 },
+                    { id: 287, question: "المحلول المركز يحتوي على:", options: ["كمية كبيرة من المذاب", "لا يحتوي مذاب", "كمية صغيرة"], correct: 0 },
+                    { id: 288, question: "المركب CO هو:", options: ["أول أكسيد الكربون", "ثاني أكسيد الكربون", "كربون فقط"], correct: 0 },
+                    { id: 289, question: "المركب CO₂ هو:", options: ["أول أكسيد الكربون", "ثاني أكسيد الكربون", "فحم"], correct: 1 },
+                    { id: 290, question: "مركب H₂O هو:", options: ["الماء", "الهيدروجين", "الأكسجين"], correct: 0 }
+                ],
+                medium: [
+                    { id: 291, question: "لفصل الكحول عن الماء نستخدم:", options: ["الترشيح", "التسامي", "التقطير"], correct: 2 },
+                    { id: 292, question: "السبب في إمكانية فصل الملح عن الماء بالتبخير هو:", options: ["اختلاف اللون", "اختلاف درجة الغليان", "اختلاف الرائحة"], correct: 1 },
+                    { id: 293, question: "زيادة كمية المذاب في المحلول تؤدي إلى:", options: ["زيادة تركيزه", "تقليل حجمه", "ثبات كثافته"], correct: 0 },
+                    { id: 294, question: "عند تبخير المحلول الملحي يتبقى:", options: ["ملح فقط", "ماء", "لا شيء"], correct: 0 },
+                    { id: 295, question: "يتغير حجم الغاز عند الضغط لأن:", options: ["جزيئاته متقاربة", "جزيئاته متباعدة", "كتلته تتغير"], correct: 1 },
+                    { id: 296, question: "لفصل الحديد عن الكبريت نستخدم:", options: ["المغناطيس", "التقطير", "الترشيح"], correct: 0 },
+                    { id: 297, question: "عند تسخين مركب كيميائي فإنه قد:", options: ["يتحلل كيميائيًا", "يتبخر فقط", "يتراوح حجمه"], correct: 0 },
+                    { id: 298, question: "عند خلط الرمل والملح يمكن فصل الملح عبر:", options: ["الانصهار", "الذوبان في الماء", "التسامي"], correct: 1 },
+                    { id: 299, question: "بعد إذابة الملح وفصل الرمل، يُفصل الملح بواسطة:", options: ["التقطير", "الترشيح", "التبخير"], correct: 2 },
+                    { id: 300, question: "يختلف المركب عن المخلوط في أن المركب:", options: ["له خصائص مختلفة عن عناصره", "يمكن رؤيته", "يذوب دائمًا"], correct: 0 },
+                    { id: 301, question: "عند مقارنة ماء البحر والماء النقي فإن كثافة ماء البحر:", options: ["أقل", "أعلى", "ثابتة"], correct: 1 },
+                    { id: 302, question: "تتغير خصائص المخلوط لأن مكوناته:", options: ["لا تتفاعل كيميائيًا", "مركبات جديدة", "تغير الروابط"], correct: 0 },
+                    { id: 303, question: "السبب في ذوبان السكر في الماء هو:", options: ["جزيئات الماء قطبية", "جزيئات السكر ساخنة", "تغير الحرارة"], correct: 0 },
+                    { id: 304, question: "عند إضافة مزيد من المذاب قد يصل المحلول إلى:", options: ["حالة تشبع", "انخفاض تركيز", "انعدام اللون"], correct: 0 },
+                    { id: 305, question: "في المحلول المشبع:", options: ["يبقى جزء من المذاب غير ذائب", "يذوب كل المذاب", "يكون تركيزه صفر"], correct: 0 },
+                    { id: 306, question: "المحلول فوق المشبع يحتوي على:", options: ["أقل كمية مذاب", "أكثر من الحد الطبيعي", "لا يحتوي على مذيب"], correct: 1 },
+                    { id: 307, question: "عند مقارنة ثاني أكسيد الكربون (CO₂) وأول أكسيد الكربون (CO) فإن الاختلاف يكمن في:", options: ["عدد ذرات الأكسجين", "نوع العنصر", "شكل الجزيء فقط"], correct: 0 },
+                    { id: 308, question: "قانون النسب المتضاعفة ينطبق عندما يتحد عنصران لتكوين:", options: ["عنصر واحد", "مركبات مختلفة", "مخاليط"], correct: 1 },
+                    { id: 309, question: "المثال على قانون النسب المتضاعفة هو تكوّن:", options: ["H₂O و CO", "CO و CO₂", "NaCl و Cl₂"], correct: 1 },
+                    { id: 310, question: "عند تحليل المركب H₂O نجد أن نسبة الهيدروجين إلى الأكسجين:", options: ["ثابتة", "تتغير حسب الحجم", "تعتمد على الكثافة"], correct: 0 },
+                    { id: 311, question: "المادة النقية تختلف عن المخلوط بأنها:", options: ["ذات تركيب ثابت", "ذات تركيب متغير", "لا تحتوي جزيئات"], correct: 0 },
+                    { id: 312, question: "الهواء يمكن أن يحتوي على نسب مختلفة من الغازات لأنه:", options: ["مركب", "مخلوط", "عنصر"], correct: 1 },
+                    { id: 313, question: "السبب في أن الهواء مخلوط متجانس هو:", options: ["امتزاج الغازات جيدًا", "ثقل الغازات", "اختلاف الروائح"], correct: 0 },
+                    { id: 314, question: "الماء مادة نقية لأنه:", options: ["لا يحتوي مذاب", "له تركيب ثابت", "لونه أزرق"], correct: 1 },
+                    { id: 315, question: "يتميز المحلول بأن مكوناته:", options: ["مختلطة كيميائيًا", "غير مميزة", "طبقات"], correct: 1 },
+                    { id: 316, question: "عند خلط سكر وماء فإن السكر:", options: ["يبقى صلبًا", "يذوب في المذيب", "يتحول لغاز"], correct: 1 },
+                    { id: 317, question: "زيادة درجة الحرارة تؤدي إلى ذوبان:", options: ["كمية أقل من السكر", "كمية أكبر", "نفس الكمية"], correct: 1 },
+                    { id: 318, question: "عند تحليل CO₂ نجد:", options: ["جزيئاته أكبر من CO", "يحتوي ذرة أكسجين إضافية", "يحتوي هيدروجين"], correct: 1 },
+                    { id: 319, question: "يمكن فصل الكحول والماء بسبب:", options: ["اختلاف اللون", "اختلاف درجات الغليان", "اختلاف الرائحة فقط"], correct: 1 },
+                    { id: 320, question: "عند زيادة كمية المذيب فإن تركيز المحلول:", options: ["يزداد", "يقل", "يبقى ثابتًا"], correct: 1 }
+                ],
+                hard: [
+                    { id: 321, question: "عند مقارنة خصائص المخلوط والمركب نجد أن المخلوط يحتفظ:", options: ["بخصائص مكوناته", "بخاصية جديدة", "بالبنية البلورية"], correct: 0 },
+                    { id: 322, question: "يعكس قانون النسب الثابتة أن المركب يتكون دائمًا من:", options: ["عناصر مختلفة بنسب عشوائية", "نسب كتلية ثابتة", "ذرات مختلفة في كل مرة"], correct: 1 },
+                    { id: 323, question: "يمكن تفسير ثبات تركيب NaCl بأنه:", options: ["مركب أيوني ثابت", "مخلوط", "عنصر مفرد"], correct: 0 },
+                    { id: 324, question: "عند تحليل سلوك جزيئات المحلول نلاحظ أن المذاب:", options: ["يتجمع في الأسفل", "يتوزع بين جزيئات المذيب", "لا يذوب تمامًا"], correct: 1 },
+                    { id: 325, question: "تزداد القدرة على الذوبان عادةً عند:", options: ["انخفاض الحرارة", "ارتفاع الحرارة", "ثبات الحرارة"], correct: 1 },
+                    { id: 326, question: "المحلول فوق المشبع غير مستقر لأنه:", options: ["يحتوي كمية مذاب أكبر من اللازم", "يحتوي على مذيب قليل", "ليس فيه جزيئات"], correct: 0 },
+                    { id: 327, question: "تفسير عدم ذوبان الرمل في الماء يعتمد على:", options: ["اختلاف القطبية", "اختلاف اللون", "اختلاف الحجم"], correct: 0 },
+                    { id: 328, question: "استخدام المغناطيس لفصل الحديد عن الكبريت يدل على:", options: ["اختلاف الكثافة", "اختلاف الخواص الفيزيائية", "تفاعل كيميائي"], correct: 1 },
+                    { id: 329, question: "يعتبر الهواء خليطًا متجانسًا لأن:", options: ["الغازات تتوزع بشكل موحّد", "غاز النيتروجين أثقل", "ليس له لون"], correct: 0 },
+                    { id: 330, question: "تحليل مياه البحر يكشف أنها:", options: ["مركب جديد", "مخلوط متجانس", "مادة نقية"], correct: 1 },
+                    { id: 331, question: "العلاقة بين CO و CO₂ تعكس:", options: ["قانون حفظ الكتلة", "قانون النسب المتضاعفة", "قانون الغاز المثالي"], correct: 1 },
+                    { id: 332, question: "يمكن تفسير اختلاف درجة غليان الكحول والماء بأنه:", options: ["اختلاف في الروابط بين الجزيئات", "اختلاف اللون", "اختلاف الحجم"], correct: 0 },
+                    { id: 333, question: "عند تحليل كثافة الماء والحديد نجد أن الحديد يغوص لأن كثافته:", options: ["أقل", "أعلى", "مساوية"], correct: 1 },
+                    { id: 334, question: "في المحلول، تفسر قابلية الذوبان العالية بأنها:", options: ["تقارب الجسيمات", "توافق القطبية بين المذاب والمذيب", "اختلاف الحجم"], correct: 1 },
+                    { id: 335, question: "عند زيادة الضغط على الغاز لا يمكن تطبيق نفس القاعدة على السائل لأنه:", options: ["جسيماته متقاربة جدًا", "كثافته قليلة", "يمتزج مع الهواء"], correct: 0 },
+                    { id: 336, question: "تحليل تكوين NaCl يوضح أنه مركب أيوني لأن:", options: ["إلكترونات الصوديوم تُنقل للكلور", "الإلكترونات تشترك", "لا يوجد طاقة"], correct: 0 },
+                    { id: 337, question: "السبب في أن المخلوط غير المتجانس يمكن رؤيته هو:", options: ["اختلاف حجم الجسيمات", "اختلاف اللون", "اختلاف الكثافة فقط"], correct: 0 },
+                    { id: 338, question: "ذوبان غاز CO₂ في الماء يعتمد على:", options: ["الضغط", "اللون", "الحجم"], correct: 0 },
+                    { id: 339, question: "عند مقارنة ذوبانية المواد، فإن المادة القطبية تذوب في:", options: ["مادة لا قطبية", "مادة قطبية", "أي مادة"], correct: 1 },
+                    { id: 340, question: "تحليل سبب تكون الأملاح عند التفاعل يعتمد على:", options: ["اتحاد الشحنات المتعاكسة", "اتحاد الألوان", "اتحاد الأحجام"], correct: 0 }
+                ]
+            },
+            5: { // قسم 5: التركيب الذري (من الملف 5)
+                easy: [
+                    { id: 341, question: "الذرة تُعرّف بأنها:", options: ["أصغر جزء من المادة يحتفظ بخصائصها", "جسيم لا يتجزأ أبدًا", "مركب من عناصر"], correct: 0 },
+                    { id: 342, question: "أول من اقترح فكرة أن المادة تتكون من جسيمات صغيرة هو:", options: ["أرسطو", "ديمقريطس", "دالتون"], correct: 1 },
+                    { id: 343, question: "اعتقد أرسطو أن المادة:", options: ["تتكون من ذرات", "تتكون من أربعة عناصر", "ثابتة لا تتغير"], correct: 1 },
+                    { id: 344, question: "العالم الذي put نظرية ذرية علمية هو:", options: ["طومسون", "رذرفورد", "دالتون"], correct: 2 },
+                    { id: 345, question: "الإلكترون جسيم:", options: ["مشحون بشحنة سالبة", "مشحون بشحنة موجبة", "متعادل"], correct: 0 },
+                    { id: 346, question: "النواة تحتوي على:", options: ["إلكترونات فقط", "بروتونات ونيوترونات", "بروتونات فقط"], correct: 1 },
+                    { id: 347, question: "شحنة البروتون هي:", options: ["سالبة", "موجبة", "متعادلة"], correct: 1 },
+                    { id: 348, question: "شحنة النيوترون هي:", options: ["موجبة", "سالبة", "متعادلة"], correct: 2 },
+                    { id: 349, question: "عدد البروتونات في الذرة يمثل:", options: ["العدد الكتلي", "العدد الذري", "عدد الأيونات"], correct: 1 },
+                    { id: 350, question: "العدد الكتلي هو مجموع:", options: ["الإلكترونات والبروتونات", "البروتونات والنيوترونات", "الإلكترونات فقط"], correct: 1 },
+                    { id: 351, question: "نموذج طومسون للذرة كان يسمى:", options: ["السلكي", "نموذج الكرة الصلبة", "نموذج كرة البودينغ"], correct: 2 },
+                    { id: 352, question: "اكتشف الإلكترون العالم:", options: ["دالتون", "طومسون", "رذرفورد"], correct: 1 },
+                    { id: 353, question: "اكتشف النواة العالم:", options: ["طومسون", "رذرفورد", "بور"], correct: 1 },
+                    { id: 354, question: "اكتشف النيوترون العالم:", options: ["بور", "شادويك", "طومسون"], correct: 1 },
+                    { id: 355, question: "النظائر هي ذرات لها نفس العدد الذري ولكن تختلف في:", options: ["عدد الإلكترونات", "عدد النيوترونات", "عدد البروتونات"], correct: 1 },
+                    { id: 356, question: "الكتلة الذرية غالبًا ليست أعدادًا صحيحة لأن:", options: ["الإلكترونات ثقيلة", "العناصر لها نظائر", "البروتونات تختلف"], correct: 1 },
+                    { id: 357, question: "الإلكترونات تدور حول النواة في:", options: ["مستويات طاقة", "داخل النواة", "الفراغ الخارجي"], correct: 0 },
+                    { id: 358, question: "الوحدة المستخدمة لقياس الكتل الذرية هي:", options: ["الكيلوغرام", "الغرام", "amu"], correct: 2 },
+                    { id: 359, question: "العنصر يتحدد من خلال عدد:", options: ["الإلكترونات", "البروتونات", "النيوترونات"], correct: 1 },
+                    { id: 360, question: "النظير الأكثر انتشارًا للكربون هو:", options: ["كربون-12", "كربون-13", "كربون-14"], correct: 0 },
+                    { id: 361, question: "رمز النظير يُكتب على شكل:", options: ["A/Z X", "Z/A X", "Z × A"], correct: 0 },
+                    { id: 362, question: "الإلكترونات جسيمات:", options: ["ذات كتلة كبيرة", "كتلتها صغيرة جدًا", "عديمة الشحنة"], correct: 1 },
+                    { id: 363, question: "عدد الإلكترونات في الذرة المتعادلة يساوي:", options: ["عدد البروتونات", "عدد النيوترونات", "ضعف العدد الذري"], correct: 0 },
+                    { id: 364, question: "ذرة الصوديوم Na تحتوي على:", options: ["11 بروتون", "12 بروتون", "10 بروتون"], correct: 0 },
+                    { id: 365, question: "الهيدروجين-1 لا يحتوي على:", options: ["بروتون", "إلكترون", "نيوترون"], correct: 2 },
+                    { id: 366, question: "النموذج الذري الحديث يصف الإلكترونات بأنها:", options: ["جسيمات ساكنة", "تتحرك في سحابة إلكترونية", "ملتصقة بالنواة"], correct: 1 },
+                    { id: 367, question: "الكتلة الذرية للعنصر هي متوسط كتل:", options: ["نظائره", "إلكتروناته", "أيوناته"], correct: 0 },
+                    { id: 368, question: "الهيليوم يحتوي على:", options: ["2 بروتون", "3 بروتون", "1 بروتون"], correct: 0 },
+                    { id: 369, question: "عدد النيوترونات يساوي:", options: ["العدد الكتلي - العدد الذري", "العدد الذري ×2", "الإلكترونات - البروتونات"], correct: 0 },
+                    { id: 370, question: "عند تغير عدد النيوترونات، فإن الذرة تصبح:", options: ["مركب", "نظير", "أيون"], correct: 1 }
+                ],
+                medium: [
+                    { id: 371, question: "ذرة تحتوي على 15 بروتون و 16 نيوترون، العدد الكتلي يساوي:", options: ["15", "16", "31"], correct: 2 },
+                    { id: 372, question: "إذا كان العدد الذري لعُنصر هو 20، فإن عدد الإلكترونات في ذرة متعادلة يكون:", options: ["10", "20", "40"], correct: 1 },
+                    { id: 373, question: "النظيران O-16 و O-18 يختلفان في:", options: ["عدد البروتونات", "عدد النيوترونات", "العدد الذري"], correct: 1 },
+                    { id: 374, question: "الكتلة الذرية تمثل:", options: ["متوسط كتل النظائر", "مجموع البروتونات فقط", "عدد الإلكترونات"], correct: 0 },
+                    { id: 375, question: "نموذج رذرفورد أثبت أن معظم حجم الذرة:", options: ["صلب", "فراغ", "مملوء بالإلكترونات"], correct: 1 },
+                    { id: 376, question: "تجربة رذرفورد اعتمدت على استخدام:", options: ["أشعة سينية", "جسيمات ألفا", "الضوء المرئي"], correct: 1 },
+                    { id: 377, question: "الإلكترونات الأقرب للنواة تمتلك:", options: ["طاقة أعلى", "طاقة أقل", "نفس الطاقة دائمًا"], correct: 1 },
+                    { id: 378, question: "العدد الذري 17 يعني أن العنصر يحتوي:", options: ["17 بروتون", "17 نيوترون", "17 إلكترون فقط"], correct: 0 },
+                    { id: 379, question: "إذا كان العدد الكتلي لعنصر 40 وعدد البروتونات 18 فإن عدد النيوترونات:", options: ["18", "22", "40"], correct: 1 },
+                    { id: 380, question: "كتلة الإلكترون صغيرة جدًا لأنها:", options: ["عديمة المادة", "ليست جزءًا من النواة", "تتحرك بسرعة"], correct: 1 },
+                    { id: 381, question: "الذرة متعادلة لأن:", options: ["البروتونات = النيوترونات", "البروتونات = الإلكترونات", "الإلكترونات = النيوترونات"], correct: 1 },
+                    { id: 382, question: "الكتلة الذرية لعنصر ليست عددًا صحيحًا غالبًا بسبب:", options: ["اختلاف النظائر", "اختلاف الإلكترونات", "اختلاف الشحنات"], correct: 0 },
+                    { id: 383, question: "عند تكون الأيون الموجب، فإن الذرة:", options: ["تكتسب إلكترونات", "تفقد إلكترونات", "تفقد بروتونات"], correct: 1 },
+                    { id: 384, question: "أي من النظائر التالية عنصر واحد؟", options: ["H-1 و H-2", "H-2 و He-3", "He-4 و C-12"], correct: 0 },
+                    { id: 385, question: "وزن البروتون والنيوترون تقريبًا:", options: ["1 amu", "0 amu", "0.1 amu"], correct: 0 },
+                    { id: 386, question: "عند مقارنة بروتون ونيوترون نجد أن الاختلاف هو:", options: ["الشحنة", "الكتلة", "العدد الذري"], correct: 0 },
+                    { id: 387, question: "ذرة تحتوي على 12 بروتون و12 إلكترون و14 نيوترون، العدد الكتلي هو:", options: ["12", "14", "26"], correct: 2 },
+                    { id: 388, question: "النظير ذو الكتلة الأكبر يحتوي على:", options: ["بروتون أكثر", "نيوترونات أكثر", "إلكترونات أكثر"], correct: 1 },
+                    { id: 389, question: "إذا كان عنصر يحتوي 6 بروتونات و6 إلكترونات و8 نيوترونات، فهو:", options: ["كربون-12", "كربون-14", "كربون-10"], correct: 1 },
+                    { id: 390, question: "الذرة تصبح أيونًا عندما يتغير عدد:", options: ["البروتونات", "الإلكترونات", "النيوترونات"], correct: 1 },
+                    { id: 391, question: "كتلة الإلكترون لا تدخل في حساب العدد الكتلي لأنها:", options: ["غير مهمة", "كتلتها صغيرة جدًا", "تتحرك بسرعة"], correct: 1 },
+                    { id: 392, question: "يحدد العدد الذري نوع:", options: ["النظير", "العنصر", "المركب"], correct: 1 },
+                    { id: 393, question: "عند حساب الكتلة الذرية للكلور (تحتوي على Cl-35 بنسبة 75% و Cl-37 بنسبة 25%) نحصل على قيمة:", options: ["36.5", "37", "35"], correct: 0 },
+                    { id: 394, question: "كتلة النواة تعتمد على:", options: ["كتلة الإلكترونات", "كتلة البروتونات والنيوترونات", "الطاقة"], correct: 1 },
+                    { id: 395, question: "النظير الثقيل للهيدروجين يسمى:", options: ["بروتيوم", "ديتيريوم", "تريتيوم"], correct: 1 },
+                    { id: 396, question: "إذا كان عنصر عدده الذري = 8 فإن رمزه هو:", options: ["O", "C", "N"], correct: 0 },
+                    { id: 397, question: "إذا زاد عدد الإلكترونات عن عدد البروتونات تصبح الذرة:", options: ["أيونًا موجبًا", "أيونًا سالبًا", "نظيرًا"], correct: 1 },
+                    { id: 398, question: "ذرة K تحتوي على 19 إلكترون في الحالة المتعادلة، فإذا أصبحت K⁺ فإن عدد إلكتروناتها يصبح:", options: ["18", "19", "20"], correct: 0 },
+                    { id: 399, question: "ذرة Cl تحتوي على 17 بروتون و18 إلكترون، إذن شحنتها:", options: ["متعادلة", "سالب// قسم 5: التركيب الذري (تابع)
+medium: [
+    // ... الأسئلة السابقة
+    { id: 400, question: "زيادة عدد النيوترونات قد يؤثر في:", options: ["الشحنة", "استقرار النواة", "لون العنصر"], correct: 1 }
+],
+hard: [
+    { id: 401, question: "يعطي نموذج رذرفورد دليلًا على أن النواة:", options: ["صغيرة الحجم وكثيفة جدًا", "كبيرة الحجم", "تحتوي إلكترونات"], correct: 0 },
+    { id: 402, question: "تفسير انحراف بعض جسيمات ألفا في تجربة رذرفورد يدل على وجود:", options: ["فراغ كبير", "نواة موجبة الشحنة", "إلكترونات ثقيلة"], correct: 1 },
+    { id: 403, question: "النموذج الحديث للذرة يختلف عن نموذج بور لأنه يعتبر الإلكترونات:", options: ["تقع في مدارات ثابتة", "تنتشر في سحابة احتمالية", "ساكنة"], correct: 1 },
+    { id: 404, question: "عند مقارنة النظائر، ما الذي يحدد استقرار النواة؟", options: ["نسبة البروتونات إلى النيوترونات", "عدد الإلكترونات", "العدد الذري"], correct: 0 },
+    { id: 405, question: "عنصر عدده الذري 10 وكتلته الذرية 20، ما عدد النيوترونات؟", options: ["10", "20", "30"], correct: 0 },
+    { id: 406, question: "السبب في أن الكتلة الذرية للكربون ≠ 12 هو:", options: ["وجود نظائر متعددة", "كتلة الإلكترونات", "تغير الحرارة"], correct: 0 },
+    { id: 407, question: "تحليل النظير C-14 يكشف أنه يستخدم في:", options: ["علاج الأورام", "تحديد عمر الآثار", "صناعة المعادن"], correct: 1 },
+    { id: 408, question: "اكتشاف الإلكترون ساعد على تفسير:", options: ["سبب حيادية الذرة", "التيار الكهربائي", "الكتلة الذرية"], correct: 1 },
+    { id: 409, question: "نموذج دالتون فشل في تفسير وجود:", options: ["الذرات", "النظائر", "البروتونات"], correct: 1 },
+    { id: 410, question: "زيادة عدد النيوترونات في نظير قد يؤدي إلى:", options: ["استقرار أكبر", "عدم استقرار نووي", "تغير عدد البروتونات"], correct: 1 },
+    { id: 411, question: "تفسير الكتلة الذرية غير الصحيحة لبعض العناصر يعتمد على:", options: ["اختلاف كتلة الإلكترونات", "اختلاف نسب النظائر", "اختلاف الروابط"], correct: 1 },
+    { id: 412, question: "الفيزياء النووية تعتمد على التفاعل بين:", options: ["الإلكترونات والبروتونات", "البروتونات والنيوترونات", "الإلكترونات فقط"], correct: 1 },
+    { id: 413, question: "تحليل طاقة الروابط النووية يوضح أن الرابطة الأقوى توجد في:", options: ["النواة", "السحابة الإلكترونية", "الإلكترونات"], correct: 0 },
+    { id: 414, question: "النظائر الثقيلة قد تتحلل لأن:", options: ["كتلتها قليلة", "قوى التنافر بين البروتونات عالية", "الإلكترونات ثابتة"], correct: 1 },
+    { id: 415, question: "عند مقارنة كتلة البروتون وكتلة الإلكترون نجد أن:", options: ["الإلكترون أثقل", "البروتون أثقل بحوالي 2000 مرة", "يتساويان"], correct: 1 },
+    { id: 416, question: "نموذج طومسون كان غير دقيق لأنه:", options: ["افترض وجود نواة", "وضع الإلكترونات داخل كرة موجبة", "تجاهل الكتلة"], correct: 1 },
+    { id: 417, question: "تفاعل النيوترونات داخل النواة ينتج عنه:", options: ["إشعاع ألفا أو بيتا", "تغير العدد الذري فقط", "زيادة الإلكترونات"], correct: 0 },
+    { id: 418, question: "تفسير انبعاث أشعة غاما أنه ناتج عن:", options: ["إعادة ترتيب داخل النواة", "تغير مستوى الطاقة للإلكترون", "فقد بروتون"], correct: 0 },
+    { id: 419, question: "عند حساب متوسط الكتل النظيرية، فإن النظير الأكثر انتشارًا:", options: ["له تأثير أكبر", "تأثيره صفر", "لا يدخل في الحساب"], correct: 0 },
+    { id: 420, question: "يشير اختلاف كتلة النظيرين لنفس العنصر إلى اختلاف:", options: ["عدد البروتونات", "عدد النيوترونات", "العدد الذري"], correct: 1 }
+],
+
+// قسم 6: الإلكترونيات والطيف (من الملف 6)
+6: {
+    easy: [
+        { id: 421, question: "الإلكترون ينتقل بين مستويات الطاقة عندما:", options: ["يسخن نواة الذرة", "يكتسب أو يفقد طاقة", "يتغير عدد البروتونات"], correct: 1 },
+        { id: 422, question: "الضوء يُعد شكلًا من أشكال:", options: ["المادة", "الإشعاع الكهرومغناطيسي", "الرائحة"], correct: 1 },
+        { id: 423, question: "سرعة الضوء في الفراغ هي:", options: ["3×10⁸ م/ث", "3×10⁵ م/ث", "300 م/ث"], correct: 0 },
+        { id: 424, question: "الطول الموجي يُقاس بوحدة:", options: ["المتر", "الهرتز", "الجول"], correct: 0 },
+        { id: 425, question: "التردد يُقاس بوحدة:", options: ["متر/ثانية", "هرتز", "جول"], correct: 1 },
+        { id: 426, question: "العلاقة بين الطول الموجي والتردد هي علاقة:", options: ["طردية", "عكسية", "ثابتة"], correct: 1 },
+        { id: 427, question: "نموذج بور يصف الإلكترونات بأنها:", options: ["تتحرك في مسارات دائرية حول النواة", "تتحرك عشوائيًا", "ساكنة"], correct: 0 },
+        { id: 428, question: "عند إثارة الإلكترون فإنه ينتقل إلى:", options: ["مستوى طاقة أعلى", "النواة", "خارج الذرة فورًا"], correct: 0 },
+        { id: 429, question: "عودة الإلكترون إلى مستوى طاقة أقل تسبب:", options: ["انبعاث ضوء", "تكوّن أيون", "تكوّن نواة جديدة"], correct: 0 },
+        { id: 430, question: "طاقة الفوتون تعتمد على:", options: ["كتلة الإلكترون", "تردد الضوء", "شحنة البروتون"], correct: 1 },
+        { id: 431, question: "قاعدة أفباو تنص على أن الإلكترونات تشغل:", options: ["أعلى مستوى طاقة أولًا", "أدنى مستوى طاقة أولًا", "أي مستوى بدون ترتيب"], correct: 1 },
+        { id: 432, question: "مبدأ استبعاد باولي ينص على أن الإلكترونين في المستوى نفسه يجب أن يكونا:", options: ["في الاتجاه نفسه", "لهما نفس الكم", "بعكس الاتجاه"], correct: 2 },
+        { id: 433, question: "قاعدة هوند تتعلق بتوزيع الإلكترونات في:", options: ["مستويات الطاقة", "المدارات الفرعية", "النواة"], correct: 1 },
+        { id: 434, question: "المدار s يتسع لعدد:", options: ["4 إلكترونات", "2 إلكترون", "6 إلكترونات"], correct: 1 },
+        { id: 435, question: "المدار p يحتوي على:", options: ["3 مدارات فرعية", "مدار واحد", "5 مدارات"], correct: 0 },
+        { id: 436, question: "العدد الأقصى للإلكترونات في المستوى الثالث هو:", options: ["8", "18", "32"], correct: 1 },
+        { id: 437, question: "الكوانتم هو مقدار:", options: ["الشحنة", "الطاقة", "الكتلة"], correct: 1 },
+        { id: 438, question: "الطيف الخطي للعنصر يمثل:", options: ["ذرات متعددة", "انتقالات إلكترونية محددة", "لون واحد فقط"], correct: 1 },
+        { id: 439, question: "الإلكترونات التي تشارك في التفاعل تسمى:", options: ["إلكترونات النواة", "إلكترونات التكافؤ", "الإلكترونات الداخلية"], correct: 1 },
+        { id: 440, question: "الإلكترونات الداخلية توجد في:", options: ["المستوى الأخير", "المستويات القريبة من النواة", "السحابة الخارجية فقط"], correct: 1 },
+        { id: 441, question: "أكبر عدد من الإلكترونات يمكن أن يوجد في المدار p هو:", options: ["2", "4", "6"], correct: 2 },
+        { id: 442, question: "الضوء الأزرق طاقته:", options: ["أقل من الأحمر", "أعلى من الأحمر", "تساوي الأحمر"], correct: 1 },
+        { id: 443, question: "طاقة الفوتون تزداد إذا زاد:", options: ["الطول الموجي", "التردد", "الحجم"], correct: 1 },
+        { id: 444, question: "الانبعاث الطيفي يحدث عند:", options: ["فقد الإلكترون للطاقة", "اكتساب الإلكترون طاقة", "انشطار النواة"], correct: 0 },
+        { id: 445, question: "الإلكترونات في المستوى n=1 تمتلك:", options: ["أكبر طاقة", "أقل طاقة", "طاقة غير محددة"], correct: 1 },
+        { id: 446, question: "ترتيب ملء المدارات يعتمد على:", options: ["رقم المجموعة", "طاقة المدار", "الكتلة الذرية"], correct: 1 },
+        { id: 447, question: "رمز المدار الفرعي للمدار الكروي هو:", options: ["p", "d", "s"], correct: 2 },
+        { id: 448, question: "خطوط الطيف الفريد لكل عنصر تشبه:", options: ["البصمة", "الظل", "الحجم"], correct: 0 },
+        { id: 449, question: "في حالة التهيّج، الإلكترون يكون:", options: ["في أدنى طاقة", "في أعلى طاقة", "داخل النواة"], correct: 1 },
+        { id: 450, question: "الضوء المرئي يتراوح طوله الموجي تقريبًا بين:", options: ["400-700 نانومتر", "100-200 نانومتر", "1-10 نانومتر"], correct: 0 }
+    ],
+    medium: [
+        { id: 451, question: "إذا كان تردد موجة ضوئية 6×10¹⁴ Hz، فإن الطول الموجي يقارب:", options: ["5×10⁻⁷ m", "5×10⁻³ m", "5×10² m"], correct: 0 },
+        { id: 452, question: "عنصر عدده الذري 16، فإن التوزيع الإلكتروني لإلكترونات التكافؤ هو:", options: ["s¹", "p⁴", "d²"], correct: 1 },
+        { id: 453, question: "إذا كان المستوى الرابع يمكنه حمل 32 إلكترون، فهذا لأن عدد المدارات فيه هو:", options: ["4", "8", "16"], correct: 1 },
+        { id: 454, question: "إذا انتقل إلكترون من n=4 إلى n=2 فإنه:", options: ["يفقد طاقة", "يكتسب طاقة", "يصبح متعادلًا"], correct: 0 },
+        { id: 455, question: "إذا كان طول موجة ضوء 700 nm فهذا يعني أنه:", options: ["أزرق", "أحمر", "بنفسجي"], correct: 1 },
+        { id: 456, question: "المدار d يحتوي على:", options: ["3 مدارات", "5 مدارات", "7 مدارات"], correct: 1 },
+        { id: 457, question: "إذا كان للعنصر 10 إلكترونات، فإن توزيعه ينتهي بـ:", options: ["2p²", "2p⁶", "3s²"], correct: 1 },
+        { id: 458, question: "عنصر ينتهي توزيعه بـ 3p⁵، فإنه يقع في المجموعة:", options: ["14", "15", "17"], correct: 2 },
+        { id: 459, question: "انتقال إلكترون داخل الذرة مرتبط بـ:", options: ["انبعاث أو امتصاص فوتون", "تغير عدد البروتونات", "تكوّن أيون"], correct: 0 },
+        { id: 460, question: "إذا كان تردد ضوء 3×10¹⁵ Hz، فطاقته:", options: ["قليلة", "كبيرة", "ثابتة"], correct: 1 },
+        { id: 461, question: "الإلكترونات في المدار p تملأ وفق قاعدة:", options: ["باولي", "هوند", "أفباو"], correct: 1 },
+        { id: 462, question: "المدارات الثلاثة في p تمتلك:", options: ["نفس الشكل", "نفس الاتجاه", "نفس الإلكترونات"], correct: 0 },
+        { id: 463, question: "عنصر له عدد ذري 19، فإن إلكترونات التكافؤ تقع في:", options: ["المستوى الرابع", "الثاني", "الأول"], correct: 0 },
+        { id: 464, question: "إذا كان لعنصر توزيع إلكتروني ينتهي بـ 4s²، فإنه يقع في المجموعة:", options: ["1", "2", "3"], correct: 1 },
+        { id: 465, question: "الضوء البنفسجي يمتلك:", options: ["أطول طول موجي", "أقصر طول موجي", "نفس طول الأحمر"], correct: 1 },
+        { id: 466, question: "إذا كانت طاقة الفوتون تعتمد على التردد، فإن زيادة الطول الموجي تؤدي إلى:", options: ["زيادة الطاقة", "نقصان الطاقة", "عدم التغير"], correct: 1 },
+        { id: 467, question: "السبب في ظهور خطوط طيفية محددة هو:", options: ["انتقالات عشوائية", "انتقالات إلكترونية محددة", "احتراق العنصر"], correct: 1 },
+        { id: 468, question: "عنصر عدده الذري 12، فإن توزيعه الإلكتروني الصحيح هو:", options: ["1s²2s²2p⁶3s²", "1s²2s²2p⁶3p²", "1s²2s²3s²"], correct: 0 },
+        { id: 469, question: "عدد الكم المغناطيسي يحدد:", options: ["الشكل", "اتجاه المدار", "عدد الإلكترونات"], correct: 1 },
+        { id: 470, question: "عدد الكم الرئيسي يحدد:", options: ["مستوى الطاقة", "الشكل", "اتجاه الدوران"], correct: 0 },
+        { id: 471, question: "عدد الكم الزاوي يحدد:", options: ["عدد الإلكترونات", "نوع المدار (s,p,d,f)", "اتجاه الدوران"], correct: 1 },
+        { id: 472, question: "عدد الكم المغزلي يحدد:", options: ["سرعة الإلكترون", "اتجاه الدوران", "نوع المدار"], correct: 1 },
+        { id: 473, question: "زيادة عدد الكم الرئيسي (n) تعني:", options: ["طاقة أقل", "طاقة أكبر", "كتلة أكبر"], correct: 1 },
+        { id: 474, question: "العنصر الذي ينتهي توزيعه بـ 4p⁶ ينتمي إلى:", options: ["الغازات النبيلة", "الفلزات القلوية", "الهالوجينات"], correct: 0 },
+        { id: 475, question: "السبب في أن الطيف الذري للعنصر مميز هو:", options: ["اختلاف عدد البروتونات", "اختلاف مستويات الطاقة", "اختلاف النيوترونات"], correct: 1 },
+        { id: 476, question: "إذا كان ضوء يمتلك ترددًا عاليًا فهذا يعني:", options: ["طاقة منخفضة", "طاقة عالية", "كتلة كبيرة"], correct: 1 },
+        { id: 477, question: "طاقة الفوتون تساوي:", options: ["m×v", "h×f", "c×λ"], correct: 1 },
+        { id: 478, question: "إذا امتص إلكترون طاقة كافية فإنه:", options: ["يقفز إلى مستوى أعلى", "يعود للنواة", "يتحول لبروتون"], correct: 0 },
+        { id: 479, question: "الترتيب الصحيح لملء المدارات هو:", options: ["1s → 2s → 2p → 3s", "1s → 3s → 2p", "1s → 1p → 2s"], correct: 0 },
+        { id: 480, question: "إذا كان عنصر به 7 إلكترونات في المدار p، فهذا يعني أنه ينتمي إلى:", options: ["d-block", "p-block", "s-block"], correct: 1 }
+    ],
+    hard: [
+        { id: 481, question: "عند انتقال إلكترون من n=5 إلى n=2 ينتج:", options: ["فوتون ذو طاقة منخفضة", "فوتون ذو طاقة عالية", "لا ينتج ضوء"], correct: 1 },
+        { id: 482, question: "تفسير استقرار الغازات النبيلة يعتمد على:", options: ["امتلاء المدار s فقط", "اكتمال مستوى التكافؤ", "امتلاك طاقة منخفضة دائمًا"], correct: 1 },
+        { id: 483, question: "إذا اختلف توزيع إلكترون واحد فقط بين عنصرين، فهذا يحدد:", options: ["اختلاف الكتلة", "اختلاف النشاط الكيميائي", "اختلاف النواة"], correct: 1 },
+        { id: 484, question: "العنصر الذي يحتوي على مدار نصف ممتلئ يكون غالبًا:", options: ["أكثر استقرارًا", "أقل استقرارًا", "متعادلًا كهربائيًا فقط"], correct: 0 },
+        { id: 485, question: "زيادة طاقة الفوتون تعتمد على:", options: ["زيادة الطول الموجي", "زيادة التردد", "زيادة الكتلة"], correct: 1 },
+        { id: 486, question: "الأطياف الناتجة من المعادن المسخنة تدل على:", options: ["تحطم النواة", "انتقالات إلكترونية", "تغير البروتونات"], correct: 1 },
+        { id: 487, question: "نموذج بور فشل في تفسير أطياف:", options: ["الهيدروجين", "العناصر متعددة الإلكترونات", "الفلزات فقط"], correct: 1 },
+        { id: 488, question: "سبب اختلاف أطياف الهيدروجين عن الهيليوم هو:", options: ["اختلاف العدد الذري", "تشابه المدارات", "تشابه الطاقة"], correct: 0 },
+        { id: 489, question: "زيادة عدد الكم الرئيسي تعني ابتعاد الإلكترونات لأن:", options: ["الجذب يصبح أقل", "النواة تتقلص", "الإلكترونات تكبر"], correct: 0 },
+        { id: 490, question: "الإلكترونات في المدار d يمكن أن تُظهر سلوكًا معقدًا بسبب:", options: ["شكل المدار", "اختلاف الشحنة", "قوة البروتون"], correct: 0 },
+        { id: 491, question: "سبب دقة مبدأ باولي أنه يمنع:", options: ["تصادم الإلكترونات", "وجود إلكترونين بنفس الأربعة أعداد الكم", "تكوّن أيون"], correct: 1 },
+        { id: 492, question: "قاعدة هوند تقلل التنافر الإلكتروني لأنها:", options: ["تملأ المدارات بنفس الاتجاه أولًا", "تغير عدد الكم", "تزيل الإلكترونات"], correct: 0 },
+        { id: 493, question: "العلاقة بين الطاقة والمستويات يمكن وصفها بأنها:", options: ["متساوية", "غير متساوية وتزداد تدريجيًا", "ثابتة دائمًا"], correct: 1 },
+        { id: 494, question: "سبب استقرار المدار الممتلئ يعود إلى:", options: ["طاقة أعلى", "طاقة أقل", "زيادة التنافر"], correct: 1 },
+        { id: 495, question: "عند حساب التردد من الطول الموجي، فإن استخدام سرعة الضوء ضروري لأنها:", options: ["تغير الكتلة", "ثابتة في الفراغ", "تعتمد على اللون"], correct: 1 },
+        { id: 496, question: "الإلكترونات في المستوى d تؤثر على:", options: ["لون الأيونات", "كتلة النواة", "عدد البروتونات"], correct: 0 },
+        { id: 497, question: "إذا كان عنصر ينتهي توزيعه بـ 4d¹، فهذا يعني أنه ينتمي إلى:", options: ["p-block", "d-block", "f-block"], correct: 1 },
+        { id: 498, question: "انتقال إلكترون من n=6 إلى n=1 يعطي فوتونًا:", options: ["منخفض الطاقة", "عالي الطاقة جدًا", "بنفس طاقة المستوى الرابع"], correct: 1 },
+        { id: 499, question: "سبب ظهور خطوط طيفية منفصلة وليس طيفًا مستمرًا هو:", options: ["مستويات طاقة منفصلة", "اختلاف البروتونات", "اختلاف النيوترونات"], correct: 0 },
+        { id: 500, question: "استقرار الذرة في حالتها الأرضية يعود إلى أن:", options: ["الإلكترونات في أقل طاقة ممكنة", "الإلكترونات بعيدة عن النواة", "النواة عديمة الشحنة"], correct: 0 }
+    ]
+}
